@@ -103,7 +103,7 @@
       border: 1px solid var(--border-color);
     }
 
-    /* Timer Badge & Sticky Header */
+    /* Timer Badge */
     .timer-badge {
       display: inline-flex;
       align-items: center;
@@ -214,7 +214,7 @@
       font-weight: 500;
     }
 
-    /* Navigator Drawer & Buttons */
+    /* Navigator Drawer */
     .palette-grid {
       display: grid;
       grid-template-columns: repeat(10, 1fr);
@@ -256,6 +256,14 @@
 
     .palette-btn.current.answered {
       box-shadow: 0 0 0 2px #0f172a;
+    }
+
+    /* Results Card Callout */
+    .score-hero-box {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border: 2px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 30px 20px;
     }
 
     /* Single-Line Footer */
@@ -346,7 +354,6 @@
       .card-shell { padding: 20px 16px; }
     }
 
-    /* Print Formatting */
     @media print {
       nav, footer, .no-print { display: none !important; }
       body { background: #ffffff; padding: 0; }
@@ -392,9 +399,10 @@
             <h6 class="fw-bold mb-2 text-dark"><i class="bi bi-info-circle-fill text-primary me-2"></i>Exam Rules & Specifications:</h6>
             <ul class="small text-muted mb-0 ps-3">
               <li><strong>Total Questions:</strong> 50 Multiple Choice Questions (A, B, C, D)</li>
-              <li><strong>Time Allowed:</strong> 45 minutes (Countdown timer automatically submits upon expiry)</li>
-              <li><strong>Navigation:</strong> Move back and forth freely using Previous and Next or the Question Grid</li>
-              <li><strong>Passing Score:</strong> 80% (40 / 50 marks)</li>
+              <li><strong>Time Allowed:</strong> 45 minutes (Auto-submits when time expires)</li>
+              <li><strong>Navigation:</strong> Move freely between questions using Previous, Next, or the Question Navigator</li>
+              <li><strong>Passing Criteria:</strong> 80% (40 / 50 marks)</li>
+              <li><strong>Confidentiality:</strong> To maintain question pool integrity, detailed questions and answer keys are concealed upon submission. Only verified scores are displayed.</li>
             </ul>
           </div>
 
@@ -426,7 +434,7 @@
       </div>
     </div>
 
-    <!-- 2. EXAMINATION RUNNER -->
+    <!-- 2. EXAMINATION RUNNER (One Question Per Page) -->
     <div id="examScreen" style="display: none;">
       
       <!-- Top Status & Timer Dock -->
@@ -450,7 +458,7 @@
             <span id="answeredCountText">0 Answered</span>
           </div>
           <div class="progress" style="height: 6px;">
-            <div class="progress-bar bg-teal" id="examProgressBar" role="progressbar" style="width: 2%; background-color: var(--accent-teal);"></div>
+            <div class="progress-bar" id="examProgressBar" role="progressbar" style="width: 2%; background-color: var(--accent-teal);"></div>
           </div>
         </div>
       </div>
@@ -465,7 +473,7 @@
         </div>
 
         <h5 class="fw-bold text-dark mb-3" id="qNumberTitle">Question 1</h5>
-        <div class="question-stem" id="qStem">Question text goes here...</div>
+        <div class="question-stem" id="qStem">Question stem...</div>
 
         <!-- Options Container -->
         <div id="optionsContainer">
@@ -484,7 +492,7 @@
         </div>
       </div>
 
-      <!-- Question Palette / Drawer (Collapsible) -->
+      <!-- Question Palette / Drawer -->
       <div id="paletteSection" class="card-shell" style="display: none;">
         <div class="d-flex justify-content-between align-items-center mb-2">
           <h6 class="fw-bold text-dark mb-0"><i class="bi bi-grid-fill text-teal me-2" style="color: var(--accent-teal);"></i>Question Jump Grid</h6>
@@ -497,16 +505,33 @@
 
     </div>
 
-    <!-- 3. SCORE & RESULTS SCREEN -->
+    <!-- 3. SCORE & RESULTS SCREEN (Question Bank Completely Hidden) -->
     <div id="resultScreen" class="card-shell" style="display: none;">
-      <div class="text-center py-4 border-bottom">
+      <div class="text-center py-4">
+        
         <div class="mb-3" id="resultIcon">
-          <i class="bi bi-check-circle-fill text-success" style="font-size: 3.5rem;"></i>
+          <i class="bi bi-check-circle-fill text-success" style="font-size: 3.8rem;"></i>
         </div>
+        
         <h2 class="fw-bold mb-1 text-dark" id="resultTitle">Examination Completed</h2>
-        <p class="text-muted small mb-3">Official Result Record • Hospital Kuala Nerang ALS Skill Portal</p>
+        <p class="text-muted small mb-4">Official Result Record • Hospital Kuala Nerang ALS Skill Portal</p>
 
-        <div class="row justify-content-center g-3 my-2">
+        <!-- Candidate Identity Badge -->
+        <div class="d-inline-block bg-white border rounded-4 shadow-sm px-4 py-2 mb-4 text-start">
+          <div class="d-flex align-items-center gap-3">
+            <div class="rounded-circle bg-light p-3 text-primary">
+              <i class="bi bi-person-badge-fill fs-3"></i>
+            </div>
+            <div>
+              <div class="fw-bold text-dark fs-6" id="finalCandidateName">Candidate Name</div>
+              <div class="text-muted small" id="finalCandidateEmail">candidate@email.com</div>
+              <div class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar-check me-1"></i><span id="finalTimestamp">-</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metric Stat Cards -->
+        <div class="row justify-content-center g-3 my-2 text-center">
           <div class="col-6 col-md-3">
             <div class="p-3 bg-light rounded-4 border">
               <div class="text-muted small fw-semibold">FINAL SCORE</div>
@@ -521,36 +546,34 @@
           </div>
           <div class="col-6 col-md-3">
             <div class="p-3 bg-light rounded-4 border">
-              <div class="text-muted small fw-semibold">STATUS</div>
+              <div class="text-muted small fw-semibold">RESULT</div>
               <div class="h3 fw-bold mb-0" id="resultBadge">PASS</div>
             </div>
           </div>
           <div class="col-6 col-md-3">
             <div class="p-3 bg-light rounded-4 border">
               <div class="text-muted small fw-semibold">TIME TAKEN</div>
-              <div class="h4 fw-bold text-secondary mb-0" id="timeTakenText">00:00</div>
+              <div class="h3 fw-bold text-secondary mb-0" id="timeTakenText">00:00</div>
             </div>
           </div>
         </div>
 
+        <!-- Verification Notice -->
+        <div class="p-3 mx-auto mt-4 rounded-4 border bg-light text-muted small" style="max-width: 600px;">
+          <i class="bi bi-shield-lock-fill text-secondary me-1"></i>
+          Your assessment has been officially computed and logged. Examination questions, choice distribution, and rationales remain secure and are not disclosed on this terminal.
+        </div>
+
         <div class="mt-4 no-print d-flex justify-content-center gap-2">
           <button onclick="window.print()" class="btn btn-primary rounded-pill px-4 fw-bold" style="background: #2c3e50; border-color: #2c3e50;">
-            <i class="bi bi-printer me-1"></i> Print / Save Result
+            <i class="bi bi-printer me-1"></i> Print Result
           </button>
           <button onclick="location.reload()" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
             <i class="bi bi-arrow-repeat me-1"></i> Retake Exam
           </button>
         </div>
-      </div>
 
-      <!-- Question Answer Breakdown -->
-      <div class="mt-4 pt-2">
-        <h5 class="fw-bold text-dark mb-3"><i class="bi bi-list-check me-2 text-primary"></i>Detailed Review & Rationales</h5>
-        <div id="reviewContainer">
-          <!-- Populated dynamically -->
-        </div>
       </div>
-
     </div>
 
   </main>
@@ -718,8 +741,7 @@
           C: "Autoimmune inflammation causing destruction of ovarian tissue",
           D: "Bacterial infection causing inflammation and necrosis of ovarian tissue"
         },
-        answer: "B",
-        explanation: "Twisting of the ovarian pedicle initially compromises venous and lymphatic drainage, resulting in congestion and oedema. Progressive torsion may subsequently compromise arterial perfusion, leading to ovarian ischaemia and infarction."
+        answer: "B"
       },
       {
         id: 13,
@@ -1378,53 +1400,33 @@
       }
     }
 
-    // Grading and Final Results
+    // Final Grading - Strictly Hides All Questions & Answers, Displays Result Only
     function finishExam(isTimeOut = false) {
       if (examSubmitted) return;
       examSubmitted = true;
       clearInterval(timerInterval);
 
+      // Compute Total Score
       let score = 0;
-      const reviewContainer = document.getElementById("reviewContainer");
-      reviewContainer.innerHTML = "";
-
       questions.forEach((q, idx) => {
-        const selected = userAnswers[idx] || "Unanswered";
-        const isCorrect = selected === q.answer;
-        if (isCorrect) score++;
-
-        const reviewCard = document.createElement("div");
-        reviewCard.className = `p-3 rounded-4 mb-3 border ${isCorrect ? 'bg-light border-success-subtle' : 'bg-light border-danger-subtle'}`;
-
-        let optionsList = "";
-        ['A', 'B', 'C', 'D'].forEach(letter => {
-          let badgeClass = "bg-light text-muted border";
-          if (letter === q.answer) badgeClass = "bg-success text-white";
-          else if (letter === selected && !isCorrect) badgeClass = "bg-danger text-white";
-
-          optionsList += `
-            <div class="small py-1 ps-2 my-1 rounded ${badgeClass}">
-              <strong>${letter}.</strong> ${q.options[letter]}
-              ${letter === q.answer ? ' <i class="bi bi-check-circle-fill ms-1"></i> (Correct)' : ''}
-              ${letter === selected && !isCorrect ? ' <i class="bi bi-x-circle-fill ms-1"></i> (Your Choice)' : ''}
-            </div>
-          `;
-        });
-
-        reviewCard.innerHTML = `
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <span class="badge ${isCorrect ? 'bg-success' : 'bg-danger'}">${isCorrect ? 'CORRECT' : 'INCORRECT'}</span>
-            <span class="small fw-bold text-muted">Q${q.id} • ${q.topic}</span>
-          </div>
-          <p class="small text-dark mb-2 fw-semibold" style="white-space: pre-line;">${q.stem}</p>
-          <div class="mb-2">${optionsList}</div>
-          ${q.explanation ? `<div class="p-2 mt-2 bg-white rounded border border-info-subtle small text-muted"><strong class="text-primary"><i class="bi bi-lightbulb-fill me-1"></i>Explanation:</strong> ${q.explanation}</div>` : ''}
-        `;
-        reviewContainer.appendChild(reviewCard);
+        const selected = userAnswers[idx];
+        if (selected && selected === q.answer) {
+          score++;
+        }
       });
 
       const percentage = ((score / 50) * 100).toFixed(1);
       const isPass = score >= 40; // 80% passing standard
+
+      // Populate Candidate Record on Final Scorecard
+      document.getElementById("finalCandidateName").innerText = candidate.name;
+      document.getElementById("finalCandidateEmail").innerText = candidate.email;
+      
+      const now = new Date();
+      document.getElementById("finalTimestamp").innerText = now.toLocaleString('en-MY', { 
+        dateStyle: 'medium', 
+        timeStyle: 'short' 
+      });
 
       document.getElementById("scoreObtained").innerText = score;
       document.getElementById("scorePct").innerText = `${percentage}%`;
@@ -1435,18 +1437,21 @@
 
       const resultIcon = document.getElementById("resultIcon");
       if (isPass) {
-        resultIcon.innerHTML = `<i class="bi bi-check-circle-fill text-success" style="font-size: 3.5rem;"></i>`;
+        resultIcon.innerHTML = `<i class="bi bi-check-circle-fill text-success" style="font-size: 3.8rem;"></i>`;
         document.getElementById("resultTitle").innerText = `Congratulations, ${candidate.name}!`;
       } else {
-        resultIcon.innerHTML = `<i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 3.5rem;"></i>`;
+        resultIcon.innerHTML = `<i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 3.8rem;"></i>`;
         document.getElementById("resultTitle").innerText = `Examination Completed`;
       }
 
+      // Calculate Time Taken
       const timeUsedSeconds = TOTAL_SECONDS - secondsLeft;
       const usedMins = Math.floor(timeUsedSeconds / 60);
       const usedSecs = timeUsedSeconds % 60;
       document.getElementById("timeTakenText").innerText = `${String(usedMins).padStart(2, '0')}:${String(usedSecs).padStart(2, '0')}`;
 
+      // Purge and hide exam elements from view
+      document.getElementById("examScreen").innerHTML = "";
       document.getElementById("examScreen").style.display = "none";
       document.getElementById("resultScreen").style.display = "block";
       window.scrollTo({ top: 0, behavior: 'smooth' });
