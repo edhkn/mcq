@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Mock MCQ Examination 2 | Hospital Kuala Nerang</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-navy: #1e293b;
+      --accent-teal: #0f766e;
+      --teal-light: #14b8a6;
+      --teal-subtle: #f0fdfa;
+      --teal-border: #ccfbf1;
+      --slate-muted: #64748b;
+      --border-color: #e2e8f0;
+    }
+
+    /* Anti-Copy Protection */
+    * {
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;
+      -webkit-touch-callout: none !important;
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    input[type="text"], input[type="email"] {
+      -webkit-user-select: auto !important;
+      -moz-user-select: auto !important;
+      -ms-user-select: auto !important;
+      user-select: auto !important;
+      font-size: 16px !important;
+    }
+
+    body {
+      background: linear-gradient(180deg, #f0fdfa 0%, #f8fafc 180px, #f1f5f9 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      display: flex;
+      flex-direction: column;
+      color: var(--primary-navy);
+      padding: 10px 8px;
+      padding-bottom: calc(10px + env(safe-area-inset-bottom));
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Forensic Security Watermark Canvas */
+    #watermarkCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.16;
+      display: none;
+    }
+
+    /* Instant Blackout Curtain */
+    #mobileScreenshotCurtain {
+      display: none;
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000000 !important;
+      z-index: 2147483647;
+      color: #ffffff;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px 16px;
+    }
+
+    body.screen-blackout {
+      filter: blur(50px) brightness(0) !important;
+      background: #000000 !important;
+      overflow: hidden !important;
+    }
+
+    body.screen-blackout #mobileScreenshotCurtain {
+      display: flex !important;
+      filter: none !important;
+    }
+
+    /* Floating Navigation */
+    nav {
+      position: sticky;
+      top: 8px;
+      z-index: 1000;
+      max-width: 900px;
+      margin: 0 auto 15px auto;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-radius: 50px;
+      padding: 8px 18px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #2c3e50;
+      min-width: 0;
+    }
+    .logo-group:hover { color: #2c3e50; text-decoration: none; }
+    
+    .dept-logo {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    
+    .logo-text {
+      font-weight: 700;
+      font-size: 0.92rem;
+      line-height: 1.2;
+      display: flex;
+      flex-direction: column;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .logo-text span {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: #7f8c8d;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .exam-wrapper {
+      max-width: 880px;
+      width: 100%;
+      margin: 0 auto 25px auto;
+      position: relative;
+    }
+
+    .card-shell {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 24px 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .status-bar {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-info-chip {
+      min-width: 0;
+      flex: 1;
+    }
+    .user-info-name {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--primary-navy);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .user-info-email {
+      font-size: 0.76rem;
+      color: var(--slate-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .timer-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #0f172a;
+      color: #38bdf8;
+      padding: 6px 14px;
+      border-radius: 24px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    .timer-badge.warning { background: #7c2d12; color: #fed7aa; }
+    .timer-badge.danger { background: #991b1b; color: #fee2e2; animation: pulseAlert 1.2s infinite; }
+
+    @keyframes pulseAlert {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    .question-topic-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--accent-teal);
+      background: var(--teal-subtle);
+      border: 1px solid var(--teal-border);
+      padding: 4px 10px;
+      border-radius: 16px;
+      display: inline-block;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Privacy Shield (Hold to Read) */
+    .privacy-container {
+      position: relative;
+      margin: 14px 0 20px 0;
+    }
+
+    .question-stem {
+      font-size: 0.98rem;
+      line-height: 1.55;
+      color: #1e293b;
+      font-weight: 500;
+      white-space: pre-line;
+      word-wrap: break-word;
+      transition: filter 0.15s ease, opacity 0.15s ease;
+    }
+
+    .question-stem.obscured {
+      filter: blur(12px) !important;
+      opacity: 0.15 !important;
+      pointer-events: none;
+    }
+
+    .hold-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(248, 250, 252, 0.85);
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      color: #475569;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 15px;
+      cursor: pointer;
+      touch-action: none;
+    }
+
+    .hold-overlay.hidden {
+      display: none !important;
+    }
+
+    /* Options */
+    .option-card {
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #ffffff;
+      min-height: 48px;
+      touch-action: manipulation;
+      transition: all 0.15s ease;
+    }
+
+    .option-card:active {
+      transform: scale(0.985);
+      background: #f1f5f9;
+    }
+
+    .option-card.selected {
+      border-color: var(--accent-teal);
+      background: #f0fdfa;
+      box-shadow: 0 2px 10px rgba(15, 118, 110, 0.12);
+    }
+
+    .option-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      border: 1px solid #cbd5e1;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .option-card.selected .option-badge {
+      background: var(--accent-teal);
+      color: #ffffff;
+      border-color: var(--accent-teal);
+    }
+
+    .option-text {
+      font-size: 0.92rem;
+      line-height: 1.45;
+      color: #334155;
+      font-weight: 500;
+      word-break: break-word;
+      padding-top: 3px;
+    }
+
+    .nav-btn-dock {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .nav-btn-dock .btn {
+      flex: 1;
+      padding: 12px 16px;
+      font-size: 0.92rem;
+      border-radius: 30px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: manipulation;
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 5px;
+      margin-top: 12px;
+    }
+
+    .palette-btn {
+      height: 36px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .palette-btn.current {
+      border: 2px solid #0f172a;
+      font-weight: 900;
+      color: #0f172a;
+      background: #e2e8f0;
+    }
+
+    .palette-btn.answered {
+      background: var(--accent-teal);
+      color: #ffffff;
+      border-color: var(--accent-teal);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: auto;
+      background: #ffffff;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 12px 16px;
+      width: 100%;
+    }
+
+    .footer-container {
+      max-width: 950px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+
+    .footer-logos {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .footer-logos img {
+      height: 26px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .logo-divider {
+      width: 1px;
+      height: 18px;
+      background-color: #cbd5e1;
+    }
+
+    .footer-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #475569;
+      background: #e2e8f0;
+      padding: 3px 9px;
+      border-radius: 16px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 5px rgba(34, 197, 94, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    }
+
+    .footer-copyright {
+      font-size: 0.72rem;
+      color: #94a3b8;
+      margin: 0;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .footer-copyright span {
+      color: #334155;
+      font-weight: 600;
+    }
+
+    @media (max-width: 576px) {
+      body { padding: 8px 6px; }
+      nav { padding: 6px 12px; margin-bottom: 10px; }
+      .dept-logo { height: 32px; }
+      .logo-text span { display: none; }
+      .card-shell { padding: 18px 14px; border-radius: 16px; }
+      .palette-grid { grid-template-columns: repeat(5, 1fr); gap: 4px; }
+      .palette-btn { height: 34px; font-size: 0.75rem; }
+      .question-stem { font-size: 0.93rem; }
+      .option-text { font-size: 0.88rem; }
+      .footer-container { gap: 6px; }
+      .footer-logos img { height: 22px; }
+      .footer-status, .footer-copyright { font-size: 0.68rem; }
+    }
+
+    @media print {
+      body * { display: none !important; }
+      body::before {
+        content: "BLOCKED: Examination content is strictly confidential.";
+        display: block !important;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        padding-top: 100px;
+        color: #b91c1c;
+      }
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;" ondragstart="return false;" onselectstart="return false;">
+
+  <!-- Forensic Background Watermark -->
+  <canvas id="watermarkCanvas"></canvas>
+
+  <!-- Mobile Screenshot Blackout Curtain -->
+  <div id="mobileScreenshotCurtain">
+    <i class="bi bi-shield-slash-fill text-danger mb-3" style="font-size: 4rem;"></i>
+    <h3 class="fw-bold mb-2 text-danger">SCREENSHOT INTERCEPTED</h3>
+    <p class="text-light" style="max-width: 440px; font-size: 0.88rem; opacity: 0.85;">
+      Hardware button combinations, screenshot captures, and app backgrounding are prohibited. Screen has been obscured for exam security.
+    </p>
+    <button class="btn btn-danger rounded-pill px-4 py-2 mt-3 fw-bold" onclick="dismissBlackout()">
+      Resume Examination
+    </button>
+  </div>
+
+  <!-- Floating Navigation -->
+  <nav>
+    <a href="index.html" class="logo-group">
+      <img src="https://lh3.googleusercontent.com/d/1O2Nj1Dr4U6wo7ISjdkDRukPYwZUkOOuJ" alt="Logo Jabatan" class="dept-logo">
+      <div class="logo-text">
+        Hospital Kuala Nerang
+        <span>Jabatan Kecemasan & Trauma</span>
+      </div>
+    </a>
+    <a href="index.html" class="btn btn-outline-primary btn-home">
+      <i class="bi bi-house-door-fill"></i> Home
+    </a>
+  </nav>
+
+  <main class="exam-wrapper">
+    
+    <!-- 1. REGISTRATION GATEWAY -->
+    <div id="startScreen" class="card-shell text-center">
+      <div class="mb-2">
+        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold" style="font-size: 0.78rem;">
+          <i class="bi bi-shield-check me-1"></i> EMERGENCY AND TRAUMA DEPARTMENT
+        </span>
+      </div>
+      <h3 class="fw-bold text-dark mb-1">Mock Exam 2</h3>
+      <p class="text-muted small mb-3">Clinical Medicine & Applied Pathophysiology • 50 Questions</p>
+
+      <div class="text-start mb-3">
+        <div class="p-3 bg-light rounded-4 border mb-3">
+          <h6 class="fw-bold mb-2 text-dark small"><i class="bi bi-shield-lock-fill text-danger me-1"></i>Mobile Anti-Screenshot Protocols:</h6>
+          <ul class="text-muted mb-0 ps-3" style="font-size: 0.8rem; line-height: 1.45;">
+            <li><strong>Forensic Watermarking:</strong> Your verified name and timestamp are etched across every question to identify leaks.</li>
+            <li><strong>Hold-To-Reveal Shield:</strong> Press and hold the question box to unmask the question text. Lifting your fingers to take a screenshot re-blurs the text immediately.</li>
+            <li><strong>Purged Results:</strong> Answers and stems are hidden after completion; only scores are shown.</li>
+          </ul>
+        </div>
+
+        <form id="entryForm" onsubmit="event.preventDefault(); startExam();">
+          <div class="mb-3">
+            <label class="form-label fw-bold small text-secondary">CANDIDATE FULL NAME *</label>
+            <input type="text" id="candidateName" class="form-control form-control-lg rounded-3" placeholder="Enter Full Name" required autocomplete="name">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold small text-secondary">OFFICIAL EMAIL ADDRESS *</label>
+            <input type="email" id="candidateEmail" class="form-control form-control-lg rounded-3" placeholder="name@moh.gov.my" required autocomplete="email">
+          </div>
+
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary py-3 fw-bold rounded-pill shadow-sm" style="background: #2c3e50; border-color: #2c3e50; font-size: 1rem;">
+              <i class="bi bi-play-circle-fill me-1"></i> Begin Examination
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 2. EXAMINATION RUNNER -->
+    <div id="examScreen" style="display: none;">
+      
+      <!-- Top Status & Timer Dock -->
+      <div class="card-shell mb-2 py-2 px-3">
+        <div class="status-bar">
+          <div class="user-info-chip">
+            <div class="user-info-name" id="dispCandidateName">Candidate Name</div>
+            <div class="user-info-email" id="dispCandidateEmail">candidate@email.com</div>
+          </div>
+          <div class="timer-badge" id="timerBadge">
+            <i class="bi bi-stopwatch-fill"></i>
+            <span id="timerText">45:00</span>
+          </div>
+        </div>
+        
+        <div class="mt-2">
+          <div class="d-flex justify-content-between text-muted fw-semibold" style="font-size: 0.75rem;">
+            <span id="progressText">Question 1 of 50</span>
+            <span id="answeredCountText">0 Answered</span>
+          </div>
+          <div class="progress mt-1" style="height: 5px;">
+            <div class="progress-bar" id="examProgressBar" role="progressbar" style="width: 2%; background-color: var(--accent-teal);"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question Card -->
+      <div class="card-shell mb-2">
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="question-topic-pill" id="qTopic">TOPIC</span>
+          <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-1" style="font-size: 0.75rem;" onclick="togglePalette()">
+            <i class="bi bi-grid-3x3-gap-fill me-1"></i> Grid
+          </button>
+        </div>
+
+        <!-- Privacy Shielded Question Box -->
+        <div class="privacy-container" id="privacyBox">
+          <div class="question-stem obscured" id="qStem">Question stem...</div>
+          <div class="hold-overlay" id="holdOverlay">
+            <i class="bi bi-fingerprint text-primary mb-1" style="font-size: 1.8rem;"></i>
+            <span>PRESS & HOLD TO READ</span>
+            <span style="font-size: 0.7rem; font-weight: 500; opacity: 0.8;">(Releases will blur screen instantly)</span>
+          </div>
+        </div>
+
+        <!-- Options Container -->
+        <div id="optionsContainer">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-btn-dock">
+          <button type="button" id="prevBtn" class="btn btn-outline-secondary" onclick="prevQuestion()">
+            <i class="bi bi-arrow-left me-1"></i> Prev
+          </button>
+
+          <button type="button" id="nextBtn" class="btn btn-primary" style="background: var(--accent-teal); border-color: var(--accent-teal);" onclick="nextQuestion()">
+            Next <i class="bi bi-arrow-right ms-1"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Question Palette / Drawer -->
+      <div id="paletteSection" class="card-shell" style="display: none;">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <h6 class="fw-bold text-dark mb-0 small"><i class="bi bi-grid-fill text-teal me-1" style="color: var(--accent-teal);"></i>Question Navigator</h6>
+          <span class="text-muted" style="font-size: 0.7rem;"><span class="badge bg-success">●</span> Done</span>
+        </div>
+        <div class="palette-grid" id="paletteGrid">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 3. SCORE & RESULTS SCREEN -->
+    <div id="resultScreen" class="card-shell text-center" style="display: none;">
+      <div class="py-3">
+        <div class="mb-2" id="resultIcon">
+          <i class="bi bi-check-circle-fill text-success" style="font-size: 3.5rem;"></i>
+        </div>
+        
+        <h3 class="fw-bold mb-1 text-dark" id="resultTitle">Examination Completed</h3>
+        <p class="text-muted small mb-3">Official Result Record • Hospital Kuala Nerang</p>
+
+        <!-- Candidate Identity Badge -->
+        <div class="bg-light border rounded-4 p-3 mb-3 text-start mx-auto" style="max-width: 440px;">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-circle bg-white p-2 text-primary border shadow-sm">
+              <i class="bi bi-person-fill fs-4"></i>
+            </div>
+            <div style="min-width: 0;">
+              <div class="fw-bold text-dark small text-truncate" id="finalCandidateName">Candidate Name</div>
+              <div class="text-muted text-truncate" style="font-size: 0.75rem;" id="finalCandidateEmail">email@domain.com</div>
+              <div class="text-muted" style="font-size: 0.72rem;"><i class="bi bi-clock me-1"></i><span id="finalTimestamp">-</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metric Stat Grid -->
+        <div class="row g-2 text-center justify-content-center">
+          <div class="col-6">
+            <div class="p-3 bg-light rounded-3 border">
+              <div class="text-muted small fw-semibold" style="font-size: 0.72rem;">FINAL SCORE</div>
+              <div class="h3 fw-bold text-dark mb-0"><span id="scoreObtained">0</span> / 50</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 bg-light rounded-3 border">
+              <div class="text-muted small fw-semibold" style="font-size: 0.72rem;">PERCENTAGE</div>
+              <div class="h3 fw-bold text-primary mb-0" id="scorePct">0%</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 bg-light rounded-3 border">
+              <div class="text-muted small fw-semibold" style="font-size: 0.72rem;">STATUS</div>
+              <div class="h4 fw-bold mb-0" id="resultBadge">PASS</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 bg-light rounded-3 border">
+              <div class="text-muted small fw-semibold" style="font-size: 0.72rem;">TIME TAKEN</div>
+              <div class="h4 fw-bold text-secondary mb-0" id="timeTakenText">00:00</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-2 mx-auto mt-3 rounded-3 border bg-light text-muted" style="max-width: 440px; font-size: 0.75rem;">
+          <i class="bi bi-shield-lock-fill text-secondary me-1"></i>
+          Exam items and answers remain secure and have been purged from memory.
+        </div>
+
+        <div class="mt-4 no-print d-flex justify-content-center gap-2">
+          <button onclick="window.print()" class="btn btn-primary rounded-pill px-4 fw-bold" style="background: #2c3e50; border-color: #2c3e50;">
+            <i class="bi bi-printer me-1"></i> Print Result
+          </button>
+          <button onclick="location.reload()" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
+            <i class="bi bi-arrow-repeat me-1"></i> Retake
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Single-Line Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logos">
+        <img src="https://lh3.googleusercontent.com/d/1O2Nj1Dr4U6wo7ISjdkDRukPYwZUkOOuJ" alt="HKN Logo">
+        <div class="logo-divider"></div>
+        <img src="https://lh3.googleusercontent.com/d/1LdMRx-PF49CWOcrjthClGLJg-yQoJ2mt" alt="MOH Logo">
+      </div>
+
+      <div class="footer-status">
+        <span class="pulse-dot"></span>
+        <span>EDHKN PORTAL Ver 2.0</span>
+      </div>
+
+      <p class="footer-copyright">© 2026 <span>Yassin Razak</span> | All Rights Reserved</p>
+    </div>
+  </footer>
+
+  <script>
+    // 50 Questions Full Bank (Exam 2)
+    const questions = [
+      {
+        id: 1,
+        topic: "Acute Arterial Occlusion",
+        stem: "A 65-year-old man with chronic atrial fibrillation presents to the emergency department with sudden-onset pain, coolness, and pallor in his left foot that began 4 hours ago. On physical examination, the left foot is cold with absent dorsalis pedis and posterior tibial pulses, while femoral pulses are intact bilaterally. What is the most likely underlying cause of this presentation?",
+        options: {
+          A: "Chronic atherosclerotic plaque rupture with in-situ thrombosis",
+          B: "Thromboembolism originating from the left atrium occluding a peripheral artery",
+          C: "Deep vein thrombosis causing acute phlegmasia cerulea dolens",
+          D: "Vasospastic Raynaud phenomenon"
+        },
+        answer: "B"
+      },
+      {
+        id: 2,
+        topic: "Facial Trauma",
+        stem: "A 24-year-old male presents after being struck in the left cheek with a blunt object. On examination, there is flattening of the cheek, tenderness over the left cheekbone, difficulty opening the mouth (trismus), and numbness over the left upper lip and cheek. Which nerve is most likely compressed?",
+        options: {
+          A: "Facial nerve (CN VII)",
+          B: "Infraorbital nerve (branch of CN V<sub>2</sub>)",
+          C: "Mental nerve (branch of CN V<sub>3</sub>)",
+          D: "Supraorbital nerve (branch of CN V<sub>1</sub>)"
+        },
+        answer: "B"
+      },
+      {
+        id: 3,
+        topic: "Immune Thrombocytopenic Purpura",
+        stem: "A 22-year-old woman presents with scattered petechiae on her lower legs and frequent nosebleeds over the past week. A complete blood count reveals a platelet count of 18,000/mm³, with normal hemoglobin and white blood cell count. Coagulation studies (PT and aPTT) are normal. What is the primary mechanism of thrombocytopenia in immune thrombocytopenic purpura (ITP)?",
+        options: {
+          A: "Decreased megakaryocyte production in the bone marrow",
+          B: "Autoantibody-mediated destruction of circulating platelets by splenic macrophages",
+          C: "Widespread formation of platelet-rich microthrombi in arterioles",
+          D: "Sequestration of platelets in an enlarged spleen"
+        },
+        answer: "B"
+      },
+      {
+        id: 4,
+        topic: "Toxicology",
+        stem: "An 18-year-old woman is brought to the emergency department from a party. She is agitated, sweating profusely, tachycardic (HR 130 bpm), hypertensive (BP 165/100 mmHg), and has bilateral dilated pupils (mydriasis) that react to light. Which toxidrome best describes these clinical findings?",
+        options: {
+          A: "Anticholinergic toxidrome",
+          B: "Sympathomimetic toxidrome",
+          C: "Opioid toxidrome",
+          D: "Cholinergic toxidrome"
+        },
+        answer: "B"
+      },
+      {
+        id: 5,
+        topic: "Infectious Disease",
+        stem: "A 30-year-old man presents with high fever, headache, severe calf muscle pain, and jaundice 10 days after participating in a muddy obstacle race. Examination reveals bilateral conjunctival suffusion without purulent discharge. What is the most likely pathogen responsible for this illness?",
+        options: {
+          A: "Leptospira interrogans",
+          B: "Plasmodium falciparum",
+          C: "Salmonella enterica serotype Typhi",
+          D: "Hepatitis A virus"
+        },
+        answer: "A"
+      },
+      {
+        id: 6,
+        topic: "Decompression Sickness",
+        stem: "A 28-year-old scuba diver surfaces rapidly after running low on compressed air. Within an hour, he develops severe, deep aching pain in his knees and shoulders (\"the bends\"), along with pruritus. What gas is responsible for forming the bubbles that cause decompression sickness?",
+        options: {
+          A: "Oxygen",
+          B: "Carbon dioxide",
+          C: "Nitrogen",
+          D: "Carbon monoxide"
+        },
+        answer: "C"
+      },
+      {
+        id: 7,
+        topic: "Cardiovascular Pharmacology",
+        stem: "A 60-year-old patient in septic shock remains hypotensive with signs of poor peripheral perfusion despite adequate fluid resuscitation and norepinephrine infusion. Bedside echocardiography demonstrates depressed left ventricular systolic function. Dobutamine is added to the therapy. What is the primary mechanism of action of dobutamine?",
+        options: {
+          A: "Alpha-1 adrenergic receptor agonist causing vasoconstriction",
+          B: "Beta-1 adrenergic receptor agonist increasing myocardial contractility",
+          C: "Phosphodiesterase-3 inhibitor increasing cAMP in vascular smooth muscle",
+          D: "Dopamine-1 receptor agonist causing selective renal vasodilation"
+        },
+        answer: "B"
+      },
+      {
+        id: 8,
+        topic: "Endocrine Pharmacology",
+        stem: "A 54-year-old man with newly diagnosed type 2 diabetes mellitus is started on metformin. Which of the following best describes the primary pharmacological mechanism by which metformin lowers blood glucose?",
+        options: {
+          A: "Stimulation of insulin release from pancreatic beta cells",
+          B: "Inhibition of hepatic gluconeogenesis",
+          C: "Delay of carbohydrate absorption in the brush border of the small intestine",
+          D: "Inhibition of the sodium-glucose cotransporter 2 (SGLT2) in renal tubules"
+        },
+        answer: "B"
+      },
+      {
+        id: 9,
+        topic: "Trauma Management",
+        stem: "A 35-year-old pedestrian is struck by an automobile and sustains an \"open-book\" pelvic fracture with pubic symphysis diastasis. He is hypotensive and tachycardic. What is the most effective immediate non-invasive stabilization method to reduce pelvic volume and tamponade bleeding?",
+        options: {
+          A: "Application of a pelvic binder or circumferential sheet wrap around the greater trochanters",
+          B: "Emergent application of skeletal traction through the proximal tibia",
+          C: "Placement of bilateral sandbags along the lateral thighs",
+          D: "Immediate exploration through a midline laparotomy"
+        },
+        answer: "A"
+      },
+      {
+        id: 10,
+        topic: "Neurological Emergencies",
+        stem: "A 45-year-old woman with chronic hypertension presents with severe headache, visual disturbances, confusion, and blood pressure of 220/120 mmHg. Brain MRI shows symmetrical white matter edema predominantly in the parieto-occipital lobes (Posterior Reversible Encephalopathy Syndrome, PRES). What type of cerebral edema is typically present in PRES?",
+        options: {
+          A: "Cytotoxic edema caused by ischemic cell death",
+          B: "Vasogenic edema caused by breakdown of cerebral autoregulation and endothelial leakage",
+          C: "Interstitial edema caused by obstructive hydrocephalus",
+          D: "Osmotic edema caused by acute hyponatremia"
+        },
+        answer: "B"
+      },
+      {
+        id: 11,
+        topic: "Hepatology pathophysiology",
+        stem: "A 52-year-old man with decompensated cirrhosis presents with progressive abdominal distension. Physical examination reveals shifting dullness and a positive fluid wave. What is the primary initiating hemodynamic factor responsible for the development of ascites in cirrhosis?",
+        options: {
+          A: "Portal hypertension leading to splanchnic arterial vasodilation",
+          B: "Decreased renal sodium excretion due to low aldosterone",
+          C: "Direct bacterial infection of the peritoneal membrane",
+          D: "Occlusion of the hepatic artery branches"
+        },
+        answer: "A"
+      },
+      {
+        id: 12,
+        topic: "Gynecological Emergencies",
+        stem: "A 22-year-old woman presents with acute-onset, severe right lower quadrant pelvic pain accompanied by nausea and vomiting. Transvaginal ultrasound demonstrates an enlarged ovary with compromised blood flow. What is the earliest vascular event that occurs in ovarian torsion?",
+        options: {
+          A: "Complete occlusion of the ovarian artery",
+          B: "Obstruction of low-pressure ovarian venous and lymphatic outflow",
+          C: "Spontaneous thrombosis of the uterine artery",
+          D: "Rupture of a graafian follicle into the peritoneal cavity"
+        },
+        answer: "B"
+      },
+      {
+        id: 13,
+        topic: "Neurology Exam",
+        stem: "A 50-year-old man presents with progressive weakness in his right leg. On physical examination, there is spasticity, hyperreflexia (3+ patellar and Achilles reflexes), and an extensor plantar response (positive Babinski sign). These findings are indicative of a lesion in which structure?",
+        options: {
+          A: "Lower motor neurons of the anterior horn",
+          B: "Upper motor neurons of the corticospinal tract",
+          C: "Neuromuscular junction",
+          D: "Peripheral sensory nerve roots"
+        },
+        answer: "B"
+      },
+      {
+        id: 14,
+        topic: "Endocrine Emergencies",
+        stem: "A 36-year-old woman with systemic lupus erythematosus has been taking 20 mg of oral prednisone daily for two years. She abruptly stops taking her medication. Three days later, she presents to the emergency department in shock, complaining of severe weakness, nausea, and abdominal pain. Laboratory evaluation shows hyponatremia and hyperkalemia. What is the underlying cause of this crisis?",
+        options: {
+          A: "Autoimmune destruction of the adrenal cortex",
+          B: "Adrenal crisis secondary to prolonged suppression of the hypothalamic-pituitary-adrenal axis",
+          C: "Acute bilateral adrenal vein thrombosis",
+          D: "Infection of the adrenal glands by cytomegalovirus"
+        },
+        answer: "B"
+      },
+      {
+        id: 15,
+        topic: "Neurosurgical Trauma",
+        stem: "A 75-year-old man presents with progressive confusion and unsteady gait over the past 3 weeks following a minor bump to the head. A non-contrast head CT reveals a crescent-shaped extra-axial fluid collection that crosses cranial suture lines. What is the source of the bleeding?",
+        options: {
+          A: "Middle meningeal artery",
+          B: "Bridging cortical veins",
+          C: "Internal carotid artery aneurysm rupture",
+          D: "Lateral venous sinus laceration"
+        },
+        answer: "B"
+      },
+      {
+        id: 16,
+        topic: "Geriatric Trauma",
+        stem: "Why are elderly patients who sustain major traumatic injuries at higher risk for sudden decompensation compared to younger adults with similar injuries?",
+        options: {
+          A: "Decreased baseline physiological reserve and blunted cardiovascular response to shock",
+          B: "Excessive baroreceptor sensitivity causing severe reflex bradycardia",
+          C: "Increased elasticity of the thoracic wall predisposing to rib fractures",
+          D: "Hyperactive cell-mediated immune response leading to early cytokine storm"
+        },
+        answer: "A"
+      },
+      {
+        id: 17,
+        topic: "Pediatric Airway",
+        stem: "Why are young children under 3 years of age at significantly higher risk of foreign body aspiration compared to older children and adults?",
+        options: {
+          A: "They lack protective gag reflexes entirely",
+          B: "The subglottic airway is narrower and funnel-shaped, combined with a tendency to mouth small objects",
+          C: "The adult trachea has a larger proportional cross-sectional area relative to body weight",
+          D: "The epiglottis in children is rudimentary and fails to cover the laryngeal inlet"
+        },
+        answer: "B"
+      },
+      {
+        id: 18,
+        topic: "Toxin Pathophysiology",
+        stem: "A 35-year-old farmer is bitten by a cobra and develops bilateral ptosis, diplopia, difficulty swallowing, and progressive limb weakness. Cobra venom neurotoxins primarily cause paralysis by acting at which site?",
+        options: {
+          A: "Blocking voltage-gated calcium channels in the spinal cord",
+          B: "Blocking acetylcholine receptors at the neuromuscular junction",
+          C: "Stimulating excessive release of GABA at central synapses",
+          D: "Inhibiting acetylcholinesterase in the synaptic cleft"
+        },
+        answer: "B"
+      },
+      {
+        id: 19,
+        topic: "Septic Shock Hemodynamics",
+        stem: "In the early, hyperdynamic phase of septic shock (\"warm shock\"), which hemodynamic parameter is characteristically decreased?",
+        options: {
+          A: "Cardiac output",
+          B: "Systemic vascular resistance (SVR)",
+          C: "Heart rate",
+          D: "Mixed venous oxygen saturation (ScvO<sub>2</sub>)"
+        },
+        answer: "B"
+      },
+      {
+        id: 20,
+        topic: "Toxicology",
+        stem: "A 40-year-old man is brought to the hospital after consuming illicitly distilled spirits. He complains of abdominal pain and visual blurring (\"like being in a snowstorm\"). Arterial blood gas shows a severe metabolic acidosis with a wide anion gap. What toxic metabolite is directly responsible for the optic nerve toxicity seen in methanol poisoning?",
+        options: {
+          A: "Glycolic acid",
+          B: "Oxalic acid",
+          C: "Formic acid",
+          D: "Acetic acid"
+        },
+        answer: "C"
+      },
+      {
+        id: 21,
+        topic: "Hematology",
+        stem: "A 60-year-old woman with chronic osteomyelitis has a hemoglobin of 9.2 g/dL with normal MCV. Iron studies show low serum iron, low total iron-binding capacity (TIBC), and elevated serum ferritin. Which hepatic acute-phase reactant is primarily responsible for blocking iron release from macrophages in anemia of chronic disease?",
+        options: {
+          A: "Transferrin",
+          B: "Hepcidin",
+          C: "Erythropoietin",
+          D: "Ferritin"
+        },
+        answer: "B"
+      },
+      {
+        id: 22,
+        topic: "Cranial Nerves",
+        stem: "A 45-year-old man presents with sudden inability to wrinkle his forehead on the left side, inability to close his left eye tightly, and drooping of the left corner of his mouth. Sensation on the face is completely normal. Which cranial nerve is affected?",
+        options: {
+          A: "Trigeminal nerve (CN V)",
+          B: "Facial nerve (CN VII)",
+          C: "Glossopharyngeal nerve (CN IX)",
+          D: "Abducens nerve (CN VI)"
+        },
+        answer: "B"
+      },
+      {
+        id: 23,
+        topic: "Rheumatology",
+        stem: "What is the primary pathological hallmark of joint involvement in early rheumatoid arthritis?",
+        options: {
+          A: "Non-inflammatory loss of articular cartilage",
+          B: "Chronic inflammation of the synovial membrane (synovitis)",
+          C: "Deposition of monosodium urate crystals in synovial fluid",
+          D: "Direct bacterial invasion of the joint capsule"
+        },
+        answer: "B"
+      },
+      {
+        id: 24,
+        topic: "Spinal Cord Trauma",
+        stem: "Following acute spinal cord trauma, mechanical injury triggers a secondary cascade that worsens tissue damage over subsequent hours. Which of the following is a major contributor to this secondary injury?",
+        options: {
+          A: "Local ischemia, edema, and excessive glutamate release (excitotoxicity)",
+          B: "Rapid hypertrophy of muscle fibers surrounding the spine",
+          C: "Immediate remyelination of damaged nerve axons",
+          D: "Downregulation of all inflammatory cytokines"
+        },
+        answer: "A"
+      },
+      {
+        id: 25,
+        topic: "Electrolyte Abnormalities",
+        stem: "A 55-year-old patient with severe watery diarrhea has a serum potassium level of 2.6 mmol/L. Which electrocardiographic (ECG) finding is most characteristic of hypokalemia?",
+        options: {
+          A: "Peaked T waves and widened QRS complexes",
+          B: "Flattened T waves and prominent U waves",
+          C: "Shortened QT interval and delta waves",
+          D: "Electrical alternans"
+        },
+        answer: "B"
+      },
+      {
+        id: 26,
+        topic: "Thyroid Emergencies",
+        stem: "Which clinical feature is essential in distinguishing thyroid storm from uncomplicated thyrotoxicosis?",
+        options: {
+          A: "The presence of elevated free T<sub>4</sub> and suppressed TSH levels",
+          B: "Systemic decompensation, such as marked hyperpyrexia, delirium, and congestive heart failure",
+          C: "The presence of a diffuse thyroid goiter",
+          D: "Elevated thyroid peroxidase (TPO) antibodies"
+        },
+        answer: "B"
+      },
+      {
+        id: 27,
+        topic: "ENT Emergencies",
+        stem: "A 30-year-old woman develops a furuncle on her upper lip. Four days later, she presents with high fever, severe headache, bilateral periorbital edema, and inability to abduct her left eye. Infection has most likely spread via the facial veins into which intracranial structure?",
+        options: {
+          A: "Superior sagittal sinus",
+          B: "Cavernous sinus",
+          C: "Transverse sinus",
+          D: "Sigmoid sinus"
+        },
+        answer: "B"
+      },
+      {
+        id: 28,
+        topic: "Cerebrovascular Disease",
+        stem: "A 68-year-old man experiences an episode of right-sided arm and leg weakness lasting 15 minutes that completely resolves. Diffusion-weighted MRI of the brain performed 2 hours later shows no evidence of acute infarction. What is the diagnosis?",
+        options: {
+          A: "Acute ischemic stroke",
+          B: "Transient ischemic attack (TIA)",
+          C: "Complicated migraine",
+          D: "Intracranial hemorrhage"
+        },
+        answer: "B"
+      },
+      {
+        id: 29,
+        topic: "Acute Abdomen",
+        stem: "A 40-year-old man presents with acute, severe diffuse abdominal pain, guarding, and abdominal rigidity (\"board-like\" abdomen). What is the most common cause of secondary bacterial peritonitis?",
+        options: {
+          A: "Spontaneous hematogenous seeding from bacteremia",
+          B: "Perforation of a hollow intra-abdominal organ (e.g., perforated peptic ulcer or appendix)",
+          C: "Primary autoimmune inflammation of the peritoneum",
+          D: "Ascending infection through the fallopian tubes in females"
+        },
+        answer: "B"
+      },
+      {
+        id: 30,
+        topic: "Gastroenterology",
+        stem: "Which dietary habit is most strongly associated with the pathogenesis and formation of colonic diverticula?",
+        options: {
+          A: "A diet chronically low in dietary fiber",
+          B: "Excessive consumption of citrus fruits",
+          C: "High dietary intake of dairy products",
+          D: "A gluten-rich diet"
+        },
+        answer: "A"
+      },
+      {
+        id: 31,
+        topic: "Cardiology",
+        stem: "A 28-year-old man presents with sharp, retrosternal chest pain that worsens when lying supine and improves when sitting forward. Auscultation reveals a high-pitched, scratchy friction rub. ECG shows diffuse ST elevation with PR depression. What is the diagnosis?",
+        options: {
+          A: "Acute myocardial infarction",
+          B: "Acute pericarditis",
+          C: "Aortic dissection",
+          D: "Tension pneumothorax"
+        },
+        answer: "B"
+      },
+      {
+        id: 32,
+        topic: "Psychiatric Pharmacology",
+        stem: "The effectiveness of typical (first-generation) and most atypical antipsychotic medications in treating positive symptoms of schizophrenia is primarily mediated by antagonism of which receptor?",
+        options: {
+          A: "Dopamine D<sub>2</sub> receptor",
+          B: "Serotonin 5-HT<sub>2A</sub> receptor alone",
+          C: "Histamine H<sub>1</sub> receptor",
+          D: "Muscarinic M<sub>1</sub> receptor"
+        },
+        answer: "A"
+      },
+      {
+        id: 33,
+        topic: "Respiratory Physiology",
+        stem: "During normal, quiet inspiration in a healthy adult at rest, which process generates the negative intrathoracic pressure needed to draw air into the lungs?",
+        options: {
+          A: "Active relaxation of the diaphragm",
+          B: "Active contraction and descent of the diaphragm",
+          C: "Contraction of the internal intercostal muscles",
+          D: "Passive elastic recoil of the chest wall"
+        },
+        answer: "B"
+      },
+      {
+        id: 34,
+        topic: "Pulmonary Vascular Physiology",
+        stem: "When a localized area of the lung becomes poorly ventilated and hypoxic, what compensatory vascular response occurs in the local pulmonary arterioles to optimize gas exchange?",
+        options: {
+          A: "Local vasodilation to increase blood flow to the hypoxic alveoli",
+          B: "Hypoxic pulmonary vasoconstriction to redirect blood flow to well-ventilated alveoli",
+          C: "Generalized systemic arterial constriction",
+          D: "Complete opening of pulmonary arteriovenous shunts"
+        },
+        answer: "B"
+      },
+      {
+        id: 35,
+        topic: "Neurophysiology",
+        stem: "Which of the following physiological processes is primarily regulated by the hypothalamus?",
+        options: {
+          A: "Fine motor coordination and balance",
+          B: "Core body temperature set-point regulation",
+          C: "Voluntary control of skeletal muscle movements",
+          D: "Primary interpretation of visual inputs"
+        },
+        answer: "B"
+      },
+      {
+        id: 36,
+        topic: "Neurological Exam",
+        stem: "A physician taps the patellar tendon with a reflex hammer, eliciting a prompt knee-jerk extension. Which spinal nerve root level is predominantly tested by this deep tendon reflex?",
+        options: {
+          A: "L1–L2",
+          B: "L3–L4",
+          C: "L5–S1",
+          D: "S1–S2"
+        },
+        answer: "B"
+      },
+      {
+        id: 37,
+        topic: "Coronary Circulation",
+        stem: "Why is the subendocardium of the left ventricle particularly vulnerable to myocardial ischemia during periods of tachycardia?",
+        options: {
+          A: "Subendocardial blood flow occurs almost entirely during systole",
+          B: "Subendocardial vessels are compressed by high intracavitary pressure during systole and rely on diastole for perfusion; tachycardia shortens diastolic time",
+          C: "Subendocardial capillaries lack nitric oxide synthase",
+          D: "The subendocardium receives its blood supply exclusively from the right coronary artery"
+        },
+        answer: "B"
+      },
+      {
+        id: 38,
+        topic: "Cardiovascular Pharmacology",
+        stem: "How do Angiotensin-Converting Enzyme (ACE) inhibitors lower blood pressure in patients with hypertension?",
+        options: {
+          A: "By blocking the binding of angiotensin II to its AT<sub>1</sub> receptors",
+          B: "By preventing the conversion of angiotensin I to angiotensin II, leading to vasodilation and decreased aldosterone secretion",
+          C: "By directly suppressing the release of renin from the juxtaglomerular cells",
+          D: "By inhibiting calcium influx through L-type calcium channels in vascular smooth muscle"
+        },
+        answer: "B"
+      },
+      {
+        id: 39,
+        topic: "Anticoagulant Pharmacology",
+        stem: "What is the specific target and mechanism of action of the anticoagulant apixaban?",
+        options: {
+          A: "Direct inhibition of thrombin (Factor IIa)",
+          B: "Direct and reversible inhibition of free and clot-bound Factor Xa",
+          C: "Inhibition of vitamin K epoxide reductase",
+          D: "Antagonism of the platelet P2Y<sub>12</sub> adenosine diphosphate receptor"
+        },
+        answer: "B"
+      },
+      {
+        id: 40,
+        topic: "Orthopedic Emergencies",
+        stem: "A 30-year-old man sustains a closed tibial fracture. Six hours later, he complains of excruciating pain in the lower leg that is out of proportion to the injury. What physical examination finding is the most sensitive early clinical indicator of acute compartment syndrome?",
+        options: {
+          A: "Absence of the distal dorsalis pedis pulse",
+          B: "Exquisite pain elicited by passive stretch of the muscles in that compartment",
+          C: "Complete sensory loss over the entire foot",
+          D: "Pallor and coolness of the affected extremity"
+        },
+        answer: "B"
+      },
+      {
+        id: 41,
+        topic: "Wound Healing",
+        stem: "During which phase of normal skin wound healing do fibroblasts actively synthesize collagen and new capillaries form (granulation tissue)?",
+        options: {
+          A: "Hemostasis phase",
+          B: "Inflammatory phase",
+          C: "Proliferative phase",
+          D: "Maturation/remodeling phase"
+        },
+        answer: "C"
+      },
+      {
+        id: 42,
+        topic: "Renal Physiology",
+        stem: "Under conditions of decreased renal perfusion pressure (such as renal artery stenosis or hypovolemia), which substance is released into the circulation by the juxtaglomerular cells of the kidney?",
+        options: {
+          A: "Erythropoietin",
+          B: "Renin",
+          C: "Calcitriol",
+          D: "Atrial natriuretic peptide"
+        },
+        answer: "B"
+      },
+      {
+        id: 43,
+        topic: "Cardiac Cycle",
+        stem: "On the ventricular pressure-volume loop and Wiggers diagram, what mechanical event marks the beginning of the isovolumetric contraction phase?",
+        options: {
+          A: "Opening of the aortic valve",
+          B: "Closure of the atrioventricular (mitral and tricuspid) valves",
+          C: "Opening of the mitral valve",
+          D: "Closure of the aortic valve"
+        },
+        answer: "B"
+      },
+      {
+        id: 44,
+        topic: "Cardiac Physiology",
+        stem: "What is the direct consequence of increasing left ventricular end-diastolic volume (preload) within normal physiological limits, as described by the Frank-Starling mechanism?",
+        options: {
+          A: "Decreased stroke volume due to myocyte overstretching",
+          B: "Increased force of myocardial contraction and increased stroke volume",
+          C: "A decrease in left ventricular systolic pressure",
+          D: "An immediate, reflex decrease in heart rate"
+        },
+        answer: "B"
+      },
+      {
+        id: 45,
+        topic: "Pulmonary Physiology",
+        stem: "Which of the following acute stimuli causes an immediate increase in pulmonary vascular resistance (PVR)?",
+        options: {
+          A: "Alveolar hyperoxia",
+          B: "Alveolar hypoxia",
+          C: "Administration of inhaled nitric oxide",
+          D: "Systemic alkalosis"
+        },
+        answer: "B"
+      },
+      {
+        id: 46,
+        topic: "Capnography",
+        stem: "In a non-intubated patient who is receiving procedural sedation with intravenous opioids, a continuous rise in end-tidal carbon dioxide (ETCO<sub>2</sub>) is most indicative of which condition?",
+        options: {
+          A: "Alveolar hyperventilation",
+          B: "Respiratory depression and alveolar hypoventilation",
+          C: "Acute pulmonary embolism",
+          D: "Sudden decrease in cardiac output"
+        },
+        answer: "B"
+      },
+      {
+        id: 47,
+        topic: "Electrophysiology",
+        stem: "What is the most common electrophysiological mechanism responsible for sustaining clinical cardiac arrhythmias such as paroxysmal supraventricular tachycardia (PSVT) and atrial flutter?",
+        options: {
+          A: "Early afterdepolarizations (EAD)",
+          B: "Re-entry circuit",
+          C: "Delayed afterdepolarizations (DAD)",
+          D: "Enhanced normal automaticity"
+        },
+        answer: "B"
+      },
+      {
+        id: 48,
+        topic: "Pancreatic Pathology",
+        stem: "In acute pancreatitis, what is the critical initial enzyme whose premature activation inside the pancreatic acinar cells sets off the cascade of autodigestion?",
+        options: {
+          A: "Lipase",
+          B: "Amylase",
+          C: "Trypsin (from trypsinogen)",
+          D: "Elastase"
+        },
+        answer: "C"
+      },
+      {
+        id: 49,
+        topic: "Spinal Cord Syndromes",
+        stem: "A patient sustains a traumatic hemisection of the spinal cord on the right side at the level of T8 (Brown-Séquard syndrome). What sensory deficit is expected on the LEFT (contralateral) side of the body below the lesion?",
+        options: {
+          A: "Loss of fine touch and vibration sensation",
+          B: "Loss of pain and temperature sensation",
+          C: "Complete loss of all sensation (anesthesia)",
+          D: "Normal sensation on the left side"
+        },
+        answer: "B"
+      },
+      {
+        id: 50,
+        topic: "Endocrinology",
+        stem: "A routine comprehensive metabolic panel in an asymptomatic 55-year-old woman reveals an elevated serum calcium level of 2.75 mmol/L (11.0 mg/dL; normal 2.15–2.55 mmol/L). Serum intact parathyroid hormone (PTH) is elevated. What is the most common cause of hypercalcemia in an ambulatory outpatient?",
+        options: {
+          A: "Malignancy with bony metastases",
+          B: "Primary hyperparathyroidism",
+          C: "Vitamin D intoxication",
+          D: "Sarcoidosis"
+        },
+        answer: "B"
+      }
+    ];
+
+    let candidate = { name: "", email: "" };
+    let currentQIndex = 0;
+    let userAnswers = {};
+    const TOTAL_SECONDS = 45 * 60;
+    let secondsLeft = TOTAL_SECONDS;
+    let timerInterval = null;
+    let examSubmitted = false;
+
+    // Forensic Watermarking Across Screen
+    function initWatermark() {
+      const canvas = document.getElementById("watermarkCanvas");
+      canvas.style.display = "block";
+      canvas.width = window.innerWidth * window.devicePixelRatio;
+      canvas.height = window.innerHeight * window.devicePixelRatio;
+      
+      const ctx = canvas.getContext("2d");
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      ctx.font = "bold 13px -apple-system, sans-serif";
+      ctx.fillStyle = "#64748b";
+      ctx.rotate(-25 * Math.PI / 180);
+
+      const stamp = `${candidate.name.toUpperCase()} • ${candidate.email} • HKN ALS`;
+      for (let y = -window.innerHeight; y < window.innerHeight * 2; y += 110) {
+        for (let x = -window.innerWidth; x < window.innerWidth * 2; x += 320) {
+          ctx.fillText(stamp, x, y);
+        }
+      }
+    }
+
+    function startExam() {
+      const nameInput = document.getElementById("candidateName").value.trim();
+      const emailInput = document.getElementById("candidateEmail").value.trim();
+
+      if (!nameInput || !emailInput) return;
+
+      candidate.name = nameInput;
+      candidate.email = emailInput;
+
+      document.getElementById("dispCandidateName").innerText = candidate.name;
+      document.getElementById("dispCandidateEmail").innerText = candidate.email;
+
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("examScreen").style.display = "block";
+
+      initWatermark();
+      setupHoldToReveal();
+      buildPalette();
+      renderQuestion();
+      startTimer();
+    }
+
+    // Touch-Hold Event Handler
+    function setupHoldToReveal() {
+      const privacyBox = document.getElementById("privacyBox");
+      const holdOverlay = document.getElementById("holdOverlay");
+      const stem = document.getElementById("qStem");
+
+      const showStem = () => {
+        stem.classList.remove("obscured");
+        holdOverlay.classList.add("hidden");
+      };
+
+      const hideStem = () => {
+        stem.classList.add("obscured");
+        holdOverlay.classList.remove("hidden");
+      };
+
+      privacyBox.addEventListener("touchstart", showStem, { passive: true });
+      privacyBox.addEventListener("touchend", hideStem, { passive: true });
+      privacyBox.addEventListener("touchcancel", hideStem, { passive: true });
+
+      privacyBox.addEventListener("mousedown", showStem);
+      privacyBox.addEventListener("mouseup", hideStem);
+      privacyBox.addEventListener("mouseleave", hideStem);
+    }
+
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        secondsLeft--;
+        updateTimerDisplay();
+
+        if (secondsLeft <= 0) {
+          clearInterval(timerInterval);
+          alert("Time has expired! Submitting your answers automatically.");
+          finishExam(true);
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(secondsLeft / 60);
+      const seconds = secondsLeft % 60;
+      const formatted = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      
+      const badge = document.getElementById("timerBadge");
+      const timerText = document.getElementById("timerText");
+      timerText.innerText = formatted;
+
+      if (secondsLeft <= 300) {
+        badge.className = "timer-badge danger";
+      } else if (secondsLeft <= 600) {
+        badge.className = "timer-badge warning";
+      }
+    }
+
+    function renderQuestion() {
+      const q = questions[currentQIndex];
+
+      document.getElementById("qTopic").innerText = `Q${q.id} • ${q.topic.toUpperCase()}`;
+      document.getElementById("qStem").innerHTML = q.stem; // Changed to innerHTML to render subscripts safely
+      document.getElementById("progressText").innerText = `Question ${q.id} of 50`;
+
+      // Reset obscured state for next question
+      document.getElementById("qStem").classList.add("obscured");
+      document.getElementById("holdOverlay").classList.remove("hidden");
+
+      const answeredTotal = Object.keys(userAnswers).length;
+      document.getElementById("answeredCountText").innerText = `${answeredTotal}/50 Done`;
+      document.getElementById("examProgressBar").style.width = `${((currentQIndex + 1) / 50) * 100}%`;
+
+      const container = document.getElementById("optionsContainer");
+      container.innerHTML = "";
+
+      ['A', 'B', 'C', 'D'].forEach(letter => {
+        const optionText = q.options[letter];
+        const isSelected = userAnswers[currentQIndex] === letter;
+
+        const optDiv = document.createElement("div");
+        optDiv.className = `option-card ${isSelected ? 'selected' : ''}`;
+        optDiv.onclick = () => selectOption(letter);
+
+        optDiv.innerHTML = `
+          <div class="option-badge">${letter}</div>
+          <div class="option-text">${optionText}</div>
+        `;
+        container.appendChild(optDiv);
+      });
+
+      document.getElementById("prevBtn").disabled = currentQIndex === 0;
+
+      const nextBtn = document.getElementById("nextBtn");
+      if (currentQIndex === questions.length - 1) {
+        nextBtn.innerHTML = `<i class="bi bi-check2-circle me-1"></i> Submit`;
+        nextBtn.className = "btn btn-danger";
+      } else {
+        nextBtn.innerHTML = `Next <i class="bi bi-arrow-right ms-1"></i>`;
+        nextBtn.className = "btn btn-primary";
+        nextBtn.style.background = "var(--accent-teal)";
+        nextBtn.style.borderColor = "var(--accent-teal)";
+      }
+
+      updatePaletteCurrent();
+    }
+
+    function selectOption(letter) {
+      userAnswers[currentQIndex] = letter;
+      renderQuestion();
+      updatePaletteStatus(currentQIndex);
+    }
+
+    function nextQuestion() {
+      if (currentQIndex === questions.length - 1) {
+        confirmSubmission();
+      } else {
+        currentQIndex++;
+        renderQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQIndex > 0) {
+        currentQIndex--;
+        renderQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function jumpToQuestion(index) {
+      currentQIndex = index;
+      renderQuestion();
+      togglePalette();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function togglePalette() {
+      const palette = document.getElementById("paletteSection");
+      palette.style.display = palette.style.display === "none" ? "block" : "none";
+    }
+
+    function buildPalette() {
+      const grid = document.getElementById("paletteGrid");
+      grid.innerHTML = "";
+
+      questions.forEach((q, idx) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.id = `pal_btn_${idx}`;
+        btn.className = "palette-btn";
+        btn.innerText = idx + 1;
+        btn.onclick = () => jumpToQuestion(idx);
+        grid.appendChild(btn);
+      });
+    }
+
+    function updatePaletteCurrent() {
+      document.querySelectorAll(".palette-btn").forEach((btn, idx) => {
+        if (idx === currentQIndex) {
+          btn.classList.add("current");
+        } else {
+          btn.classList.remove("current");
+        }
+      });
+    }
+
+    function updatePaletteStatus(index) {
+      const btn = document.getElementById(`pal_btn_${index}`);
+      if (btn) {
+        if (userAnswers[index]) {
+          btn.classList.add("answered");
+        } else {
+          btn.classList.remove("answered");
+        }
+      }
+    }
+
+    function confirmSubmission() {
+      const answeredCount = Object.keys(userAnswers).length;
+      const unanswered = 50 - answeredCount;
+
+      let msg = "Submit your examination now?";
+      if (unanswered > 0) {
+        msg = `You have ${unanswered} UNANSWERED questions! Submit anyway?`;
+      }
+
+      if (confirm(msg)) {
+        finishExam(false);
+      }
+    }
+
+    function finishExam(isTimeOut = false) {
+      if (examSubmitted) return;
+      examSubmitted = true;
+      clearInterval(timerInterval);
+
+      let score = 0;
+      questions.forEach((q, idx) => {
+        const selected = userAnswers[idx];
+        if (selected && selected === q.answer) {
+          score++;
+        }
+      });
+
+      const percentage = ((score / 50) * 100).toFixed(1);
+      const isPass = score >= 40;
+      const statusText = isPass ? "PASS" : "NEEDS REMEDIAL";
+
+      // --- GOOGLE SHEETS INTEGRATION ---
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxWLvDNxMqDMQU1IP4_Kycwb1tugwCv_Bj4rSAY5_2jRw_OCWH7M7u-D6ECKku-LSa6/exec'; 
+      
+      const payload = {
+        name: candidate.name,
+        email: candidate.email,
+        score: score,
+        percentage: percentage,
+        status: statusText
+      };
+
+      // Send the data asynchronously in the background
+      fetch(scriptURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      })
+      .then(response => console.log('Successfully saved to Google Sheets'))
+      .catch(error => console.error('Error saving to Google Sheets:', error));
+      // -------------------------------------
+
+      document.getElementById("finalCandidateName").innerText = candidate.name;
+      document.getElementById("finalCandidateEmail").innerText = candidate.email;
+      
+      const now = new Date();
+      document.getElementById("finalTimestamp").innerText = now.toLocaleString('en-MY', { 
+        dateStyle: 'medium', 
+        timeStyle: 'short' 
+      });
+
+      document.getElementById("scoreObtained").innerText = score;
+      document.getElementById("scorePct").innerText = `${percentage}%`;
+
+      const resultBadge = document.getElementById("resultBadge");
+      resultBadge.innerText = statusText;
+      resultBadge.className = `h4 fw-bold mb-0 ${isPass ? 'text-success' : 'text-danger'}`;
+
+      const resultIcon = document.getElementById("resultIcon");
+      if (isPass) {
+        resultIcon.innerHTML = `<i class="bi bi-check-circle-fill text-success" style="font-size: 3.5rem;"></i>`;
+        document.getElementById("resultTitle").innerText = `Congratulations!`;
+      } else {
+        resultIcon.innerHTML = `<i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 3.5rem;"></i>`;
+        document.getElementById("resultTitle").innerText = `Completed`;
+      }
+
+      const timeUsedSeconds = TOTAL_SECONDS - secondsLeft;
+      const usedMins = Math.floor(timeUsedSeconds / 60);
+      const usedSecs = timeUsedSeconds % 60;
+      document.getElementById("timeTakenText").innerText = `${String(usedMins).padStart(2, '0')}:${String(usedSecs).padStart(2, '0')}`;
+
+      questions.length = 0;
+      document.getElementById("watermarkCanvas").remove();
+      document.getElementById("examScreen").innerHTML = "";
+      document.getElementById("examScreen").style.display = "none";
+      document.getElementById("resultScreen").style.display = "block";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ========================================================
+    // MOBILE ANTI-SCREENSHOT & ANTI-CAPTURE ENGINE
+    // ========================================================
+
+    function wipeClipboard() {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText("").catch(() => {});
+      }
+    }
+
+    function triggerBlackout(reasonText) {
+      if (examSubmitted) return;
+      document.body.classList.add("screen-blackout");
+      if (reasonText) {
+        document.querySelector("#mobileScreenshotCurtain p").innerText = reasonText;
+      }
+      wipeClipboard();
+    }
+
+    function dismissBlackout() {
+      document.body.classList.remove("screen-blackout");
+      wipeClipboard();
+    }
+
+    // Multi-Finger Gesture Detection
+    window.addEventListener("touchstart", (e) => {
+      if (e.touches && e.touches.length >= 2) {
+        triggerBlackout("Multi-touch screen gesture detected. Screenshot blocked.");
+      }
+    }, { passive: false });
+
+    // Touch Cancel Detection (Hardware button interception)
+    window.addEventListener("touchcancel", () => {
+      if (document.getElementById("examScreen").style.display === "block" && !examSubmitted) {
+        triggerBlackout("Hardware gesture interception detected. Content shielded.");
+      }
+    });
+
+    // Page Hide & Visibility Change
+    window.addEventListener("pagehide", () => {
+      triggerBlackout("App backgrounded or screenshot gesture initiated.");
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && document.getElementById("examScreen").style.display === "block" && !examSubmitted) {
+        triggerBlackout("Focus shifted. Content blocked.");
+      }
+    });
+
+    // Window Blur
+    window.addEventListener("blur", () => {
+      if (document.getElementById("examScreen").style.display === "block" && !examSubmitted) {
+        triggerBlackout("Window blur detected. Screen blocked.");
+      }
+    });
+
+    // Keyboard Screenshot Interception
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "PrintScreen" || e.keyCode === 44) {
+        triggerBlackout("PrintScreen disabled. Content blocked.");
+        e.preventDefault();
+        return false;
+      }
+
+      const isCtrlOrCmd = e.ctrlKey || e.metaKey;
+      if (isCtrlOrCmd) {
+        const key = e.key.toLowerCase();
+        if (['c', 'v', 'x', 'a', 's', 'p', 'u'].includes(key)) {
+          e.preventDefault();
+          return false;
+        }
+        if (e.shiftKey && ['i', 'j', 'c', 's'].includes(key)) {
+          e.preventDefault();
+          return false;
+        }
+      }
+
+      if (e.key === "F12" || e.keyCode === 123) {
+        e.preventDefault();
+        return false;
+      }
+    });
+  </script>
+
+</body>
+</html>
