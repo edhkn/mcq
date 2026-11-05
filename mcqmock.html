@@ -1,9 +1,8 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>ALS ADEC - Mock MCQ Examination | Hospital Kuala Nerang</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -28,7 +27,7 @@
       -webkit-touch-callout: none !important;
     }
 
-    /* Allow typing in form inputs while keeping copy/paste blocked */
+    /* Allow typing in entry inputs */
     input[type="text"], input[type="email"] {
       -webkit-user-select: auto !important;
       -moz-user-select: auto !important;
@@ -44,25 +43,36 @@
       flex-direction: column;
       color: var(--primary-navy);
       padding: 15px 10px;
+      transition: filter 0.1s ease;
     }
 
-    /* Focus/Screenshot Shield Overlay */
-    #focusShield {
+    /* High-Security Blackout Curtain for Mobile Screenshots & Blur */
+    #mobileScreenshotCurtain {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(15, 23, 42, 0.98);
-      backdrop-filter: blur(25px);
-      z-index: 99999;
+      background: #000000 !important;
+      z-index: 2147483647;
       color: #ffffff;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 20px;
+      padding: 30px 20px;
+    }
+
+    /* Active Blackout State: Fully blanks and blacks out background content */
+    body.screen-blackout {
+      filter: blur(60px) brightness(0) !important;
+      background: #000000 !important;
+      overflow: hidden !important;
+    }
+
+    body.screen-blackout #mobileScreenshotCurtain {
+      display: flex !important;
+      filter: none !important;
     }
 
     /* Floating Navigation */
@@ -383,11 +393,11 @@
       .card-shell { padding: 20px 16px; }
     }
 
-    /* Anti-Screen Grab / Anti-Print: Completely blanks out screen if Print is triggered */
+    /* Print Blanking */
     @media print {
       body * { display: none !important; }
       body::before {
-        content: "Printing and screen recording of examination material is strictly prohibited.";
+        content: "BLOCKED: Screen recording and printing are strictly prohibited.";
         display: block !important;
         font-size: 1.5rem;
         font-weight: bold;
@@ -400,15 +410,15 @@
 </head>
 <body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;" ondragstart="return false;" onselectstart="return false;">
 
-  <!-- Focus/Screenshot Blur Shield Overlay -->
-  <div id="focusShield">
-    <i class="bi bi-shield-slash-fill text-danger mb-3" style="font-size: 4rem;"></i>
-    <h3 class="fw-bold mb-2">Screen Captured / Focus Lost</h3>
-    <p class="text-light" style="max-width: 500px; opacity: 0.85;">
-      Taking screenshots, switching tabs, opening developer utilities, or using screen snippet tools is strictly prohibited during this examination.
+  <!-- Mobile Screenshot / Blur Blackout Curtain -->
+  <div id="mobileScreenshotCurtain">
+    <i class="bi bi-shield-slash-fill text-danger mb-3" style="font-size: 4.5rem;"></i>
+    <h3 class="fw-bold mb-2 text-danger">SCREENSHOT BLOCKED</h3>
+    <p class="text-light fs-6" style="max-width: 480px; opacity: 0.85;">
+      Mobile screenshot capture, screen recording, gesture-snapping, and app-switching are strictly prohibited during the assessment. Content is shielded.
     </p>
-    <button class="btn btn-outline-light rounded-pill px-4 mt-2" onclick="dismissShield()">
-      Return to Exam
+    <button class="btn btn-danger rounded-pill px-4 py-2 mt-3 fw-bold" onclick="dismissBlackout()">
+      Resume Examination
     </button>
   </div>
 
@@ -445,13 +455,13 @@
         <div class="col-md-9 col-lg-8">
           
           <div class="p-3 bg-light rounded-4 border mb-4">
-            <h6 class="fw-bold mb-2 text-dark"><i class="bi bi-shield-lock-fill text-danger me-2"></i>Exam Integrity & Proctoring Rules:</h6>
+            <h6 class="fw-bold mb-2 text-dark"><i class="bi bi-shield-lock-fill text-danger me-2"></i>Mobile Anti-Screenshot & Proctoring Rules:</h6>
             <ul class="small text-muted mb-0 ps-3">
               <li><strong>Total Questions:</strong> 50 Multiple Choice Questions (A, B, C, D)</li>
               <li><strong>Duration:</strong> 45 minutes (Auto-submits when time expires)</li>
-              <li><strong>Anti-Cheating Enabled:</strong> Right-click, text selection, copy-pasting, screenshots, and screen grabs are actively disabled and monitored.</li>
-              <li><strong>Focus Protection:</strong> Exiting full screen or opening snippet utilities will blur and freeze the exam interface.</li>
-              <li><strong>Concealed Answer Bank:</strong> Detailed question items and answer keys are fully purged upon submission; only verified grades are revealed.</li>
+              <li><strong>Mobile Screenshot Block:</strong> Taking screenshots via mobile button combos, 3-finger swipe gestures, or notification center drag instantly turns the screen pitch-black and triggers the blackout shield.</li>
+              <li><strong>Anti-Cheating Enabled:</strong> Text selection, long-press callouts, copy-pasting, and right-click menus are disabled.</li>
+              <li><strong>Concealed Answer Bank:</strong> Question stems and answer keys are immediately purged upon submission; only verified scores are displayed.</li>
             </ul>
           </div>
 
@@ -1505,94 +1515,100 @@
     }
 
     // ========================================================
-    // ANTI-COPY, ANTI-PASTE & ANTI-SCREENSHOT PROCTORING ENGINE
+    // MOBILE ANTI-SCREENSHOT & ANTI-CAPTURE ENGINE
     // ========================================================
 
-    // 1. Flush clipboard helper
     function wipeClipboard() {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText("").catch(() => {});
       }
     }
 
-    // 2. Intercept keyboard shortcuts (PrintScreen, DevTools, Copy, Cut, Paste, Print, Save, View Source)
+    function triggerBlackout(reasonText) {
+      if (examSubmitted) return;
+      document.body.classList.add("screen-blackout");
+      if (reasonText) {
+        document.querySelector("#mobileScreenshotCurtain p").innerText = reasonText;
+      }
+      wipeClipboard();
+    }
+
+    function dismissBlackout() {
+      document.body.classList.remove("screen-blackout");
+      wipeClipboard();
+    }
+
+    // 1. Mobile Multi-Touch & Gesture Interception (Blocks 3-finger swipe screenshot)
+    window.addEventListener("touchstart", (e) => {
+      if (e.touches && e.touches.length >= 3) {
+        triggerBlackout("Multi-finger gesture detected. Screen blacked out to prevent screenshot captures.");
+      }
+    }, { passive: false });
+
+    window.addEventListener("touchmove", (e) => {
+      if (e.touches && e.touches.length >= 3) {
+        triggerBlackout("Multi-finger gesture detected. Screen blacked out to prevent screenshot captures.");
+      }
+    }, { passive: false });
+
+    // 2. Touch Cancel detection: Triggered when OS takes over touch for screenshot gesture
+    window.addEventListener("touchcancel", () => {
+      if (document.getElementById("examScreen").style.display === "block" && !examSubmitted) {
+        triggerBlackout("OS gesture interception detected. Screen blacked out for examination security.");
+      }
+    });
+
+    // 3. Instant Page Hide / Visibility Change (Fires when notification shade / screenshot preview sheet opens)
+    window.addEventListener("pagehide", () => {
+      triggerBlackout("App backgrounded or screen capture initiated. Picture blocked.");
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && document.getElementById("examScreen").style.display === "block" && !examSubmitted) {
+        triggerBlackout("App switched or screen grab initiated. Picture blocked.");
+      }
+    });
+
+    // 4. Window Blur (Triggered when phone volume/power hardware keys are held or share modal opens)
+    window.addEventListener("blur", () => {
+      if (document.getElementById("examScreen").style.display === "block" && !examSubmitted) {
+        triggerBlackout("Window focus lost or screenshot action triggered. Picture blocked.");
+      }
+    });
+
+    // 5. Desktop Keyboard Screenshot & Copy Interception
     document.addEventListener("keydown", (e) => {
-      // PrintScreen interception
       if (e.key === "PrintScreen" || e.keyCode === 44) {
-        wipeClipboard();
-        showShield("Screenshot function is disabled.");
+        triggerBlackout("PrintScreen disabled. Picture blocked.");
         e.preventDefault();
         return false;
       }
 
       const isCtrlOrCmd = e.ctrlKey || e.metaKey;
-
       if (isCtrlOrCmd) {
         const key = e.key.toLowerCase();
-
-        // Block Copy (Ctrl+C), Paste (Ctrl+V), Cut (Ctrl+X), Select All (Ctrl+A)
-        if (key === 'c' || key === 'v' || key === 'x' || key === 'a') {
+        if (key === 'c' || key === 'v' || key === 'x' || key === 'a' || key === 's' || key === 'p' || key === 'u') {
           e.preventDefault();
           return false;
         }
-
-        // Block Save Page (Ctrl+S), Print (Ctrl+P), View Source (Ctrl+U)
-        if (key === 's' || key === 'p' || key === 'u') {
-          e.preventDefault();
-          return false;
-        }
-
-        // Block DevTools: Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
-        if (e.shiftKey && (key === 'i' || key === 'j' || key === 'c')) {
+        if (e.shiftKey && (key === 'i' || key === 'j' || key === 'c' || key === 's')) {
           e.preventDefault();
           return false;
         }
       }
 
-      // Block F12 (DevTools)
       if (e.key === "F12" || e.keyCode === 123) {
         e.preventDefault();
         return false;
       }
     });
 
-    // 3. Clear clipboard on PrintScreen keyup
     document.addEventListener("keyup", (e) => {
       if (e.key === "PrintScreen" || e.keyCode === 44) {
-        wipeClipboard();
-        showShield("Screenshots are strictly prohibited.");
+        triggerBlackout("PrintScreen key pressed. Picture blocked.");
       }
     });
-
-    // 4. Blank screen when tab loses focus (Window Blur / Visibility Change)
-    window.addEventListener("blur", () => {
-      if (!examSubmitted && document.getElementById("examScreen").style.display === "block") {
-        showShield();
-      }
-    });
-
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden && !examSubmitted && document.getElementById("examScreen").style.display === "block") {
-        showShield();
-      }
-    });
-
-    function showShield(msg) {
-      const shield = document.getElementById("focusShield");
-      if (msg) {
-        shield.querySelector("p").innerText = msg;
-      }
-      shield.style.display = "flex";
-      wipeClipboard();
-    }
-
-    function dismissShield() {
-      document.getElementById("focusShield").style.display = "none";
-      wipeClipboard();
-    }
   </script>
 
 </body>
 </html>
-
-```
