@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1604,6 +1603,28 @@
 
       const percentage = ((score / 50) * 100).toFixed(1);
       const isPass = score >= 40;
+      const statusText = isPass ? "PASS" : "NEEDS REMEDIAL";
+
+      // --- GOOGLE SHEETS INTEGRATION ---
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxWLvDNxMqDMQU1IP4_Kycwb1tugwCv_Bj4rSAY5_2jRw_OCWH7M7u-D6ECKku-LSa6/exec'; 
+      
+      const payload = {
+        name: candidate.name,
+        email: candidate.email,
+        score: score,
+        percentage: percentage,
+        status: statusText
+      };
+
+      // Send the data asynchronously in the background
+      fetch(scriptURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      })
+      .then(response => console.log('Successfully saved to Google Sheets'))
+      .catch(error => console.error('Error saving to Google Sheets:', error));
+      // -------------------------------------
 
       document.getElementById("finalCandidateName").innerText = candidate.name;
       document.getElementById("finalCandidateEmail").innerText = candidate.email;
@@ -1618,7 +1639,7 @@
       document.getElementById("scorePct").innerText = `${percentage}%`;
 
       const resultBadge = document.getElementById("resultBadge");
-      resultBadge.innerText = isPass ? "PASS" : "NEEDS REMEDIAL";
+      resultBadge.innerText = statusText;
       resultBadge.className = `h4 fw-bold mb-0 ${isPass ? 'text-success' : 'text-danger'}`;
 
       const resultIcon = document.getElementById("resultIcon");
@@ -1729,5 +1750,3 @@
 
 </body>
 </html>
-
-```
