@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ALS ADEC - Mock MCQ Examination | Hospital Kuala Nerang</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-navy: #1e293b;
+      --accent-teal: #0f766e;
+      --teal-light: #14b8a6;
+      --teal-subtle: #f0fdfa;
+      --teal-border: #ccfbf1;
+      --slate-muted: #64748b;
+      --border-color: #e2e8f0;
+    }
+
+    body {
+      background: linear-gradient(180deg, #f0fdfa 0%, #f8fafc 180px, #f1f5f9 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: var(--primary-navy);
+      padding: 15px 10px;
+    }
+
+    /* Floating Navigation */
+    nav {
+      position: sticky;
+      top: 15px;
+      z-index: 1000;
+      max-width: 900px;
+      margin: 0 auto 25px auto;
+      width: calc(100% - 20px);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-radius: 50px;
+      padding: 10px 24px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #2c3e50;
+    }
+    .logo-group:hover {
+      color: #2c3e50;
+      text-decoration: none;
+    }
+    .dept-logo {
+      height: 46px;
+      width: auto;
+      object-fit: contain;
+    }
+    .logo-text {
+      font-weight: 700;
+      font-size: 1.05rem;
+      line-height: 1.25;
+      display: flex;
+      flex-direction: column;
+    }
+    .logo-text span {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #7f8c8d;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: all 0.2s ease-in-out;
+    }
+
+    /* Main Container Cards */
+    .exam-wrapper {
+      max-width: 880px;
+      width: 100%;
+      margin: 0 auto 40px auto;
+    }
+
+    .card-shell {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
+    }
+
+    /* Timer Badge & Sticky Header */
+    .timer-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #0f172a;
+      color: #38bdf8;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .timer-badge.warning {
+      background: #7c2d12;
+      color: #fed7aa;
+    }
+
+    .timer-badge.danger {
+      background: #991b1b;
+      color: #fee2e2;
+      animation: pulseAlert 1.2s infinite;
+    }
+
+    @keyframes pulseAlert {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    /* Question Styling */
+    .question-topic-pill {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--accent-teal);
+      background: var(--teal-subtle);
+      border: 1px solid var(--teal-border);
+      padding: 4px 12px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .question-stem {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #1e293b;
+      font-weight: 500;
+      white-space: pre-line;
+      margin-bottom: 24px;
+    }
+
+    /* Options */
+    .option-card {
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: #ffffff;
+      user-select: none;
+    }
+
+    .option-card:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .option-card.selected {
+      border-color: var(--accent-teal);
+      background: #f0fdfa;
+      box-shadow: 0 4px 14px rgba(15, 118, 110, 0.12);
+    }
+
+    .option-badge {
+      min-width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.9rem;
+      border: 1px solid #cbd5e1;
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: all 0.2s ease;
+    }
+
+    .option-card.selected .option-badge {
+      background: var(--accent-teal);
+      color: #ffffff;
+      border-color: var(--accent-teal);
+    }
+
+    .option-text {
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #334155;
+      font-weight: 500;
+    }
+
+    /* Navigator Drawer & Buttons */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 6px;
+      margin-top: 15px;
+    }
+
+    .palette-btn {
+      height: 34px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      padding: 0;
+    }
+
+    .palette-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .palette-btn.current {
+      border: 2px solid #0f172a;
+      font-weight: 900;
+      color: #0f172a;
+    }
+
+    .palette-btn.answered {
+      background: var(--accent-teal);
+      color: #ffffff;
+      border-color: var(--accent-teal);
+    }
+
+    .palette-btn.current.answered {
+      box-shadow: 0 0 0 2px #0f172a;
+    }
+
+    /* Single-Line Footer */
+    footer {
+      margin-top: auto;
+      background: #ffffff;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 14px 20px;
+    }
+
+    .footer-container {
+      max-width: 950px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: nowrap;
+    }
+
+    .footer-logos {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .footer-logos img {
+      height: 34px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .logo-divider {
+      width: 1px;
+      height: 22px;
+      background-color: #cbd5e1;
+    }
+
+    .footer-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #475569;
+      background: #e2e8f0;
+      padding: 4px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    }
+
+    .footer-copyright {
+      font-size: 0.82rem;
+      color: #94a3b8;
+      margin: 0;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .footer-copyright span {
+      color: #334155;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .footer-container { gap: 8px; }
+      .footer-logos img { height: 26px; }
+      .footer-status, .footer-copyright { font-size: 0.72rem; }
+      .palette-grid { grid-template-columns: repeat(5, 1fr); }
+      .card-shell { padding: 20px 16px; }
+    }
+
+    /* Print Formatting */
+    @media print {
+      nav, footer, .no-print { display: none !important; }
+      body { background: #ffffff; padding: 0; }
+      .card-shell { border: none; box-shadow: none; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Navigation -->
+  <nav>
+    <a href="index.html" class="logo-group">
+      <img src="https://lh3.googleusercontent.com/d/1O2Nj1Dr4U6wo7ISjdkDRukPYwZUkOOuJ" alt="Logo Jabatan" class="dept-logo">
+      <div class="logo-text">
+        Hospital Kuala Nerang
+        <span>Jabatan Kecemasan & Trauma</span>
+      </div>
+    </a>
+    <a href="index.html" class="btn btn-outline-primary btn-home">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.293V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.293l5-5z"/>
+      </svg>
+      Home
+    </a>
+  </nav>
+
+  <main class="exam-wrapper">
+    
+    <!-- 1. REGISTRATION GATEWAY -->
+    <div id="startScreen" class="card-shell text-center">
+      <div class="mb-3">
+        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold" style="font-size: 0.85rem;">
+          <i class="bi bi-patch-check-fill me-1"></i> ALS ADEC COHORT 15
+        </span>
+      </div>
+      <h2 class="fw-bold text-dark mb-2">ALS MCQ Mock Examination</h2>
+      <p class="text-muted small mb-4">Complete 50 timed clinical scenario and physiological questions within 45 minutes.</p>
+
+      <div class="row justify-content-center text-start mb-4">
+        <div class="col-md-9 col-lg-8">
+          
+          <div class="p-3 bg-light rounded-4 border mb-4">
+            <h6 class="fw-bold mb-2 text-dark"><i class="bi bi-info-circle-fill text-primary me-2"></i>Exam Rules & Specifications:</h6>
+            <ul class="small text-muted mb-0 ps-3">
+              <li><strong>Total Questions:</strong> 50 Multiple Choice Questions (A, B, C, D)</li>
+              <li><strong>Time Allowed:</strong> 45 minutes (Countdown timer automatically submits upon expiry)</li>
+              <li><strong>Navigation:</strong> Move back and forth freely using Previous and Next or the Question Grid</li>
+              <li><strong>Passing Score:</strong> 80% (40 / 50 marks)</li>
+            </ul>
+          </div>
+
+          <form id="entryForm" onsubmit="event.preventDefault(); startExam();">
+            <div class="mb-3">
+              <label class="form-label fw-bold small text-secondary">CANDIDATE FULL NAME *</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-person text-muted"></i></span>
+                <input type="text" id="candidateName" class="form-control" placeholder="e.g. DR. AHMAD AZIM BIN SHARUPUDDIN" required autocomplete="name">
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-bold small text-secondary">OFFICIAL EMAIL ADDRESS *</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-envelope text-muted"></i></span>
+                <input type="email" id="candidateEmail" class="form-control" placeholder="e.g. examiner@moh.gov.my" required autocomplete="email">
+              </div>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg fw-bold rounded-pill shadow-sm" style="background: #2c3e50; border-color: #2c3e50;">
+                <i class="bi bi-play-circle-fill me-2"></i> Start 45-Minute Examination
+              </button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. EXAMINATION RUNNER -->
+    <div id="examScreen" style="display: none;">
+      
+      <!-- Top Status & Timer Dock -->
+      <div class="card-shell mb-3 py-3 px-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+          <div>
+            <div class="fw-bold text-dark fs-6" id="dispCandidateName">Candidate Name</div>
+            <div class="text-muted small" id="dispCandidateEmail">candidate@email.com</div>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <div class="timer-badge" id="timerBadge">
+              <i class="bi bi-stopwatch-fill"></i>
+              <span id="timerText">45:00</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-3">
+          <div class="d-flex justify-content-between text-muted small fw-semibold mb-1">
+            <span id="progressText">Question 1 of 50</span>
+            <span id="answeredCountText">0 Answered</span>
+          </div>
+          <div class="progress" style="height: 6px;">
+            <div class="progress-bar bg-teal" id="examProgressBar" role="progressbar" style="width: 2%; background-color: var(--accent-teal);"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question Card -->
+      <div class="card-shell mb-3">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="question-topic-pill" id="qTopic">TOPIC</span>
+          <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-1" onclick="togglePalette()">
+            <i class="bi bi-grid-3x3-gap-fill me-1"></i> Question Navigator
+          </button>
+        </div>
+
+        <h5 class="fw-bold text-dark mb-3" id="qNumberTitle">Question 1</h5>
+        <div class="question-stem" id="qStem">Question text goes here...</div>
+
+        <!-- Options Container -->
+        <div id="optionsContainer">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+          <button type="button" id="prevBtn" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold" onclick="prevQuestion()">
+            <i class="bi bi-arrow-left me-1"></i> Previous
+          </button>
+
+          <button type="button" id="nextBtn" class="btn btn-primary rounded-pill px-4 fw-bold" style="background: var(--accent-teal); border-color: var(--accent-teal);" onclick="nextQuestion()">
+            Next <i class="bi bi-arrow-right ms-1"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Question Palette / Drawer (Collapsible) -->
+      <div id="paletteSection" class="card-shell" style="display: none;">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6 class="fw-bold text-dark mb-0"><i class="bi bi-grid-fill text-teal me-2" style="color: var(--accent-teal);"></i>Question Jump Grid</h6>
+          <span class="small text-muted"><span class="badge bg-success me-1">●</span> Answered &nbsp; <span class="badge bg-secondary me-1">●</span> Unanswered</span>
+        </div>
+        <div class="palette-grid" id="paletteGrid">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 3. SCORE & RESULTS SCREEN -->
+    <div id="resultScreen" class="card-shell" style="display: none;">
+      <div class="text-center py-4 border-bottom">
+        <div class="mb-3" id="resultIcon">
+          <i class="bi bi-check-circle-fill text-success" style="font-size: 3.5rem;"></i>
+        </div>
+        <h2 class="fw-bold mb-1 text-dark" id="resultTitle">Examination Completed</h2>
+        <p class="text-muted small mb-3">Official Result Record • Hospital Kuala Nerang ALS Skill Portal</p>
+
+        <div class="row justify-content-center g-3 my-2">
+          <div class="col-6 col-md-3">
+            <div class="p-3 bg-light rounded-4 border">
+              <div class="text-muted small fw-semibold">FINAL SCORE</div>
+              <div class="h2 fw-bold text-dark mb-0"><span id="scoreObtained">0</span> / 50</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="p-3 bg-light rounded-4 border">
+              <div class="text-muted small fw-semibold">PERCENTAGE</div>
+              <div class="h2 fw-bold text-primary mb-0" id="scorePct">0%</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="p-3 bg-light rounded-4 border">
+              <div class="text-muted small fw-semibold">STATUS</div>
+              <div class="h3 fw-bold mb-0" id="resultBadge">PASS</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="p-3 bg-light rounded-4 border">
+              <div class="text-muted small fw-semibold">TIME TAKEN</div>
+              <div class="h4 fw-bold text-secondary mb-0" id="timeTakenText">00:00</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 no-print d-flex justify-content-center gap-2">
+          <button onclick="window.print()" class="btn btn-primary rounded-pill px-4 fw-bold" style="background: #2c3e50; border-color: #2c3e50;">
+            <i class="bi bi-printer me-1"></i> Print / Save Result
+          </button>
+          <button onclick="location.reload()" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
+            <i class="bi bi-arrow-repeat me-1"></i> Retake Exam
+          </button>
+        </div>
+      </div>
+
+      <!-- Question Answer Breakdown -->
+      <div class="mt-4 pt-2">
+        <h5 class="fw-bold text-dark mb-3"><i class="bi bi-list-check me-2 text-primary"></i>Detailed Review & Rationales</h5>
+        <div id="reviewContainer">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer (Single-Line, Non-Stacking) -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logos">
+        <img src="https://lh3.googleusercontent.com/d/1O2Nj1Dr4U6wo7ISjdkDRukPYwZUkOOuJ" alt="HKN Logo">
+        <div class="logo-divider"></div>
+        <img src="https://lh3.googleusercontent.com/d/1LdMRx-PF49CWOcrjthClGLJg-yQoJ2mt" alt="MOH Logo">
+      </div>
+
+      <div class="footer-status">
+        <span class="pulse-dot"></span>
+        <span>EDHKN PORTAL Ver 2.0</span>
+      </div>
+
+      <p class="footer-copyright">© 2026 <span>Yassin Razak</span> | All Rights Reserved</p>
+    </div>
+  </footer>
+
+  <script>
+    // 50 Questions Full Bank
+    const questions = [
+      {
+        id: 1,
+        topic: "Acute limb ischaemia",
+        stem: "A 50-year-old man presents with sudden-onset severe pain and coldness in his right leg that started six hours ago. He also reports numbness and difficulty moving his foot. He has a history of hypertension and atrial fibrillation but is not on anticoagulation.\n\nOn examination, his BP is 135/85 mmHg, HR 110 beats per minute and irregular, RR 18 breaths per minute, and oxygen saturation is 98% on room air. His right lower limb is pale, cold and mottled, with absent dorsalis pedis and posterior tibial pulses. Sensory examination reveals reduced pinprick sensation in the foot, and motor examination shows reduced strength in ankle dorsiflexion.\n\nWhat is the most likely underlying pathophysiological process?",
+        options: {
+          A: "Abrupt obstruction of a major artery leading to tissue hypoxia",
+          B: "Gradual atherosclerotic narrowing reducing perfusion to distal tissues",
+          C: "Impaired venous drainage causing congestion and oedema",
+          D: "Inflammatory vascular damage leading to endothelial dysfunction"
+        },
+        answer: "A"
+      },
+      {
+        id: 2,
+        topic: "Zygomatic arch fracture",
+        stem: "A 38-year-old man presents after being punched in the face during an altercation. He reports swelling and difficulty opening his mouth fully.\n\nOn examination, there is periorbital swelling and bruising over the left cheekbone. He has tenderness over the left zygomatic arch and infraorbital rim, with associated hypoesthesia over the left cheek. The jaw deviates to the left when he tries to open his mouth.\n\nWhat is the most likely underlying pathophysiological process?",
+        options: {
+          A: "Disruption of bony architecture leading to mechanical instability",
+          B: "Entrapment of soft tissue causing impaired muscle function",
+          C: "Impaired venous outflow leading to localized swelling and bruising",
+          D: "Nerve compression resulting in sensory deficits and muscle dysfunction"
+        },
+        answer: "A"
+      },
+      {
+        id: 3,
+        topic: "Immune thrombocytopenia",
+        stem: "A woman presents with petechiae over her lower limbs and ecchymoses on her arms. Blood tests reveal a platelet count of 12,000/mm³, normal haemoglobin and normal white blood cell count. Peripheral blood smear shows large platelets but no schistocytes. Coagulation studies are within normal limits.\n\nWhat is the most likely underlying pathophysiological process?",
+        options: {
+          A: "Accelerated immune-mediated destruction of circulating platelets",
+          B: "Bone marrow suppression leading to reduced platelet production",
+          C: "Disseminated activation of clotting factors causing platelet consumption",
+          D: "Microvascular injury resulting in platelet aggregation and destruction"
+        },
+        answer: "A"
+      },
+      {
+        id: 4,
+        topic: "Sympathomimetic toxicity",
+        stem: "A 32-year-old man is brought to the emergency department by friends after exhibiting bizarre behaviour and agitation at a party. He is sweating profusely, clenching his jaw and has dilated pupils. His friends report that he took an unknown substance earlier in the evening.\n\nOn examination, BP is 160/95 mmHg and HR 125 beats per minute.\n\nWhat is the most likely underlying pathophysiological process?",
+        options: {
+          A: "Dopamine and norepinephrine reuptake inhibition causing sympathomimetic overstimulation",
+          B: "GABAergic inhibition leading to excessive excitatory neurotransmission",
+          C: "Opioid receptor stimulation causing respiratory and central nervous system depression",
+          D: "Serotonin receptor overstimulation leading to autonomic dysregulation"
+        },
+        answer: "A"
+      },
+      {
+        id: 5,
+        topic: "Leptospirosis",
+        stem: "A 45-year-old man presents with fever, myalgia and headache for the past three days. He recently returned from a camping trip and swimming. He also reports mild conjunctival redness and dark urine.\n\nExamination reveals conjunctival suffusion, mild hepatomegaly, leukocytosis, thrombocytopenia, elevated creatinine and elevated total bilirubin.\n\nWhat is the most likely underlying pathophysiological process?",
+        options: {
+          A: "Bacterial invasion leading to endothelial damage and vascular permeability",
+          B: "Direct viral cytopathic effect resulting in multi-organ dysfunction",
+          C: "Immune complex deposition causing tissue inflammation and organ injury",
+          D: "Parasitic invasion of red blood cells leading to haemolysis"
+        },
+        answer: "A"
+      },
+      {
+        id: 6,
+        topic: "Decompression sickness",
+        stem: "A 36-year-old scuba diver presents with joint pain and confusion after surfacing from a deep dive. He reports ascending rapidly due to equipment malfunction. He now has difficulty walking and complains of dizziness.\n\nExamination reveals ataxia, decreased sensation in both lower limbs and pain in his shoulders and elbows.\n\nWhat is the most likely underlying pathophysiological process?",
+        options: {
+          A: "Formation of nitrogen bubbles causing mechanical obstruction and inflammation",
+          B: "Hypoxic neuronal injury leading to central nervous system dysfunction",
+          C: "Increased intracranial pressure resulting in vascular compression",
+          D: "Systemic inflammatory response causing endothelial dysfunction"
+        },
+        answer: "A"
+      },
+      {
+        id: 7,
+        topic: "Septic shock and inotropic therapy",
+        stem: "A 58-year-old man with hypertension and chronic kidney disease presents with fever, chills and altered mental status. He has persistent hypotension despite intravenous fluids, antibiotics and vasopressors. An inotropic agent is started to improve cardiac output.\n\nWhich of the following best describes the mechanism of action of the chosen drug?",
+        options: {
+          A: "Alpha-adrenergic receptor stimulation leading to vasoconstriction",
+          B: "Beta-1 adrenergic receptor activation increasing myocardial contractility",
+          C: "Dopaminergic receptor activation improving renal perfusion",
+          D: "Phosphodiesterase inhibition leading to increased cyclic AMP"
+        },
+        answer: "B"
+      },
+      {
+        id: 8,
+        topic: "Type 2 diabetes mellitus",
+        stem: "A 45-year-old woman with a 10-year history of type 2 diabetes mellitus presents with worsening fatigue, thirst and frequent urination. Laboratory investigations reveal random blood glucose of 18.2 mmol/L and HbA1c of 10.5%.\n\nWhich of the following best describes the mechanism of action of her prescribed medication?",
+        options: {
+          A: "Enhancement of insulin secretion from pancreatic beta cells",
+          B: "Inhibition of hepatic glucose production",
+          C: "Increased glucose excretion via the renal tubules",
+          D: "Sensitization of peripheral tissues to insulin"
+        },
+        answer: "D"
+      },
+      {
+        id: 9,
+        topic: "Pelvic fracture",
+        stem: "A 40-year-old man sustains a fall from a height and lands on his pelvis. He is unable to stand due to severe pain.\n\nExamination reveals tenderness over the pubic symphysis and instability of the pelvic girdle. A bedside FAST ultrasound shows free fluid.\n\nWhich of the following anatomical structures is most likely disrupted?",
+        options: {
+          A: "Bony integrity of the pelvic ring",
+          B: "Ligamentous support stabilizing the pelvis",
+          C: "Major vascular structures supplying the lower limb",
+          D: "Nerve pathways responsible for lower limb function"
+        },
+        answer: "A"
+      },
+      {
+        id: 10,
+        topic: "Hypertensive emergency",
+        stem: "A 48-year-old man presents with a severe, throbbing headache associated with nausea and transient blurry vision. His BP is 230/140 mmHg. Neurological examination reveals mild right-sided upper limb weakness, hyperreflexia and an upgoing plantar reflex. Fundoscopy reveals bilateral papilloedema. CT scan shows no acute haemorrhage.\n\nWhat is the most likely underlying pathophysiological process?",
+        options: {
+          A: "Dysfunction of the blood-brain barrier leading to fluid accumulation in the brain",
+          B: "Excessive sympathetic activation resulting in widespread vasoconstriction",
+          C: "Impaired cerebral autoregulation causing vascular injury",
+          D: "Vascular occlusion leading to neuronal ischaemia"
+        },
+        answer: "C"
+      },
+      {
+        id: 11,
+        topic: "Decompensated liver cirrhosis",
+        stem: "A 55-year-old man with a history of chronic alcohol use presents with progressive abdominal distension and worsening fatigue. He reports occasional confusion and easy bruising.\n\nExamination reveals ascites, bilateral pitting oedema and asterixis. Blood tests show low albumin, elevated bilirubin, prolonged INR and thrombocytopenia.\n\nWhat is the most likely underlying pathophysiological process?",
+        options: {
+          A: "Decreased hepatic protein synthesis leading to reduced oncotic pressure",
+          B: "Impaired detoxification of ammonia causing neurological dysfunction",
+          C: "Increased resistance in the portal circulation leading to fluid accumulation",
+          D: "Reduced bile excretion resulting in accumulation of toxic metabolites"
+        },
+        answer: "C"
+      },
+      {
+        id: 12,
+        topic: "Ovarian Torsion",
+        stem: "A 26-year-old woman presents to the Emergency Department with sudden-onset severe right lower abdominal pain associated with nausea and vomiting for the past 4 hours. She has a known right ovarian cyst diagnosed 2 months ago.\n\nOn examination, she is tachycardic with right iliac fossa tenderness and guarding. Pelvic ultrasound reveals an enlarged right ovary with reduced Doppler blood flow.\n\nWhat is the most likely underlying pathophysiological mechanism?",
+        options: {
+          A: "Arterial thrombosis causing complete interruption of ovarian blood supply",
+          B: "Impaired venous drainage causing ovarian congestion, oedema and subsequent tissue ischaemia",
+          C: "Autoimmune inflammation causing destruction of ovarian tissue",
+          D: "Bacterial infection causing inflammation and necrosis of ovarian tissue"
+        },
+        answer: "B",
+        explanation: "Twisting of the ovarian pedicle initially compromises venous and lymphatic drainage, resulting in congestion and oedema. Progressive torsion may subsequently compromise arterial perfusion, leading to ovarian ischaemia and infarction."
+      },
+      {
+        id: 13,
+        topic: "Upper Motor Neuron Lesion",
+        stem: "A 55-year-old man presents with progressive weakness of his right upper and lower limbs following a cerebrovascular accident. On neurological examination, he has increased muscle tone, brisk deep tendon reflexes and a positive Babinski sign on the right side.\n\nWhich of the following best explains the underlying pathophysiological mechanism?",
+        options: {
+          A: "Disruption of the corticospinal tract leading to impaired voluntary motor control",
+          B: "Damage to peripheral motor nerves resulting in loss of muscle innervation",
+          C: "Destruction of anterior horn cells causing lower motor neuron dysfunction",
+          D: "Neuromuscular junction dysfunction resulting in impaired acetylcholine transmission"
+        },
+        answer: "A"
+      },
+      {
+        id: 14,
+        topic: "Adrenal insufficiency",
+        stem: "A woman presents with progressive fatigue, nausea and generalized weakness. She complains of dizziness upon standing and has been on long-term corticosteroids for lupus control.\n\nExamination reveals hypotension, hyponatraemia and hyperkalaemia.\n\nWhat is the most likely underlying pathophysiological process?",
+        options: {
+          A: "Autoimmune-mediated destruction of hormone-producing cells",
+          B: "Deficient hormone production leading to electrolyte imbalance",
+          C: "Dysregulation of the hypothalamic-pituitary-adrenal axis",
+          D: "Reduced renal sodium retention causing volume depletion"
+        },
+        answer: "B"
+      },
+      {
+        id: 15,
+        topic: "Subdural haematoma",
+        stem: "A 25-year-old man is brought to the emergency department after being assaulted. He briefly lost consciousness but initially remained alert. Subsequently, he became progressively drowsy and confused.\n\nNeurological examination reveals GCS E3 V3 M6.\n\nWhat is the most likely underlying pathophysiological process?",
+        options: {
+          A: "Disruption of bridging veins leading to progressive bleeding",
+          B: "Epidural arterial rupture causing rapid expansion of haematoma",
+          C: "Focal cerebral contusion with secondary oedema formation",
+          D: "Widespread axonal injury resulting in impaired neural connectivity"
+        },
+        answer: "A"
+      },
+      {
+        id: 16,
+        topic: "Trauma in elderly patients",
+        stem: "Which of the following best explains the increased severity of trauma in elderly patients?",
+        options: {
+          A: "Decreased physiological reserve and impaired tissue repair mechanisms",
+          B: "Hyperactive immune response leading to faster healing",
+          C: "Increased bone density and enhanced muscle mass",
+          D: "Increased cardiac output maintaining better perfusion after trauma"
+        },
+        answer: "A"
+      },
+      {
+        id: 17,
+        topic: "Paediatric airway",
+        stem: "Which physiological and anatomical characteristics contribute to the increased risk of airway obstruction in children?",
+        options: {
+          A: "Decreased pharyngeal muscle tone and lower lung compliance",
+          B: "Higher respiratory rate and elongated epiglottis",
+          C: "Immature protective airway reflexes and narrower subglottic airway",
+          D: "Shorter tracheal length and increased airway collapsibility"
+        },
+        answer: "C"
+      },
+      {
+        id: 18,
+        topic: "Neurotoxic envenomation",
+        stem: "Which of the following best describes the underlying pathophysiology of neurotoxic envenomation?",
+        options: {
+          A: "Blockade of voltage-gated sodium channels, preventing nerve impulse propagation",
+          B: "Depolarization blockade at the neuromuscular junction due to persistent acetylcholine receptor activation",
+          C: "Impairment of synaptic transmission via inhibition of acetylcholine release at presynaptic nerve terminals",
+          D: "Sympathetic overstimulation resulting in autonomic instability and arrhythmias"
+        },
+        answer: "C"
+      },
+      {
+        id: 19,
+        topic: "Septic Shock",
+        stem: "A 65-year-old man is brought to the Emergency Department with fever, chills and altered mental status. He has a suspected urinary tract infection. On examination, his BP is 78/42 mmHg, HR 125 beats/min, RR 28 breaths/min and temperature 39.2°C. Despite adequate fluid resuscitation, he remains hypotensive and requires vasopressor support.\n\nWhich of the following best explains the underlying pathophysiological mechanism responsible for hypotension in septic shock?",
+        options: {
+          A: "Excessive cytokine release causing widespread vasodilation and increased vascular permeability",
+          B: "Reduced myocardial contractility due to direct bacterial invasion of cardiac muscle",
+          C: "Increased systemic vascular resistance resulting from sympathetic nervous system activation",
+          D: "Decreased circulating blood volume due to excessive renal fluid loss"
+        },
+        answer: "A"
+      },
+      {
+        id: 20,
+        topic: "Methanol poisoning",
+        stem: "Which of the following best explains the toxicity of methanol poisoning?",
+        options: {
+          A: "Accumulation of formic acid leading to metabolic acidosis and optic nerve toxicity",
+          B: "Direct methanol toxicity causing immediate multi-organ failure",
+          C: "Inhibition of cytochrome oxidase leading to tissue hypoxia",
+          D: "Stimulation of alcohol dehydrogenase producing neuroprotective metabolites"
+        },
+        answer: "A"
+      },
+      {
+        id: 21,
+        topic: "Anaemia of chronic disease",
+        stem: "Which mechanism contributes to anaemia in chronic disease?",
+        options: {
+          A: "Decreased erythropoietin production",
+          B: "Impaired iron utilization despite normal stores",
+          C: "Increased red blood cell destruction",
+          D: "Suppression of bone marrow function by pro-inflammatory cytokines"
+        },
+        answer: "D"
+      },
+      {
+        id: 22,
+        topic: "Cranial nerve palsy",
+        stem: "Which of the following is a common cause of cranial nerve palsy?",
+        options: {
+          A: "Autoimmune demyelination",
+          B: "Brainstem ischaemia",
+          C: "Compression by tumours",
+          D: "Infectious inflammation"
+        },
+        answer: "C"
+      },
+      {
+        id: 23,
+        topic: "Rheumatoid arthritis",
+        stem: "What is the primary pathological process in rheumatoid arthritis?",
+        options: {
+          A: "Autoimmune synovial inflammation",
+          B: "Cartilage destruction by proteolytic enzymes",
+          C: "Chronic T-cell activation",
+          D: "Excessive pannus formation"
+        },
+        answer: "A"
+      },
+      {
+        id: 24,
+        topic: "Secondary spinal cord injury",
+        stem: "Which factor contributes most to secondary injury in spinal cord trauma?",
+        options: {
+          A: "Excitotoxicity from excessive neurotransmitter release",
+          B: "Ischaemia due to microvascular disruption",
+          C: "Local inflammatory response leading to oedema",
+          D: "Oxidative stress damaging neuronal cells"
+        },
+        answer: "B"
+      },
+      {
+        id: 25,
+        topic: "Wound healing",
+        stem: "Which phase of wound healing involves collagen synthesis and tissue remodelling?",
+        options: {
+          A: "Inflammatory phase",
+          B: "Proliferative phase involving collagen synthesis and tissue remodelling",
+          C: "Haemostasis phase",
+          D: "Maturation phase"
+        },
+        answer: "B"
+      },
+      {
+        id: 26,
+        topic: "Hypokalaemia",
+        stem: "Which physiological change is expected in hypokalaemia?",
+        options: {
+          A: "Decreased excitability of cardiac myocytes",
+          B: "Impaired repolarization leading to prolonged QT interval",
+          C: "Increased intracellular potassium shift",
+          D: "Reduced neuromuscular transmission"
+        },
+        answer: "B"
+      },
+      {
+        id: 27,
+        topic: "Thyroid storm",
+        stem: "Which of the following is a key pathophysiological feature of thyroid storm?",
+        options: {
+          A: "Excessive adrenergic stimulation",
+          B: "Increased metabolic rate",
+          C: "Severe hyperthermia",
+          D: "Uncontrolled thyroid hormone release"
+        },
+        answer: "A"
+      },
+      {
+        id: 28,
+        topic: "Cavernous sinus thrombosis",
+        stem: "What is the primary consequence of cavernous sinus thrombosis?",
+        options: {
+          A: "Cranial nerve compression leading to ophthalmoplegia",
+          B: "Increased intracranial pressure",
+          C: "Septic embolism leading to systemic infection",
+          D: "Venous congestion causing proptosis"
+        },
+        answer: "A"
+      },
+      {
+        id: 29,
+        topic: "Transient ischaemic attack (TIA)",
+        stem: "Which of the following describes the mechanism of transient ischaemic attack?",
+        options: {
+          A: "Embolic occlusion with rapid reperfusion",
+          B: "Hypoperfusion due to carotid stenosis",
+          C: "Microvascular spasm",
+          D: "Temporary platelet aggregation"
+        },
+        answer: "A"
+      },
+      {
+        id: 30,
+        topic: "Secondary bacterial peritonitis",
+        stem: "Which is a major cause of secondary bacterial peritonitis?",
+        options: {
+          A: "Gastrointestinal perforation",
+          B: "Haematogenous bacterial spread",
+          C: "Translocation of gut flora",
+          D: "Trauma leading to peritoneal contamination"
+        },
+        answer: "A"
+      },
+      {
+        id: 31,
+        topic: "Diverticular disease",
+        stem: "Which pathological process contributes to the development of colonic diverticula?",
+        options: {
+          A: "Chronic low-fibre diet leading to increased colonic pressure",
+          B: "Diverticulum wall weakness due to genetic factors",
+          C: "Impaired colonic motility",
+          D: "Microvascular ischaemia in colonic mucosa"
+        },
+        answer: "A"
+      },
+      {
+        id: 32,
+        topic: "Acute pericarditis",
+        stem: "Which pathological process underlies acute pericarditis?",
+        options: {
+          A: "Autoimmune inflammation of the pericardium",
+          B: "Direct viral infection of pericardial tissue",
+          C: "Increased pericardial vascular permeability",
+          D: "Neutrophil infiltration causing fibrin deposition"
+        },
+        answer: "D"
+      },
+      {
+        id: 33,
+        topic: "Acute psychosis",
+        stem: "Which of the following mechanisms is involved in acute psychosis?",
+        options: {
+          A: "Altered dopamine neurotransmission",
+          B: "Excessive glutamate excitotoxicity",
+          C: "Increased serotonergic dysregulation",
+          D: "Neuroinflammation affecting cortical function"
+        },
+        answer: "A"
+      },
+      {
+        id: 34,
+        topic: "Pulmonary ventilation",
+        stem: "Which factor determines pulmonary ventilation during breathing?",
+        options: {
+          A: "Airway resistance",
+          B: "Chest wall compliance",
+          C: "Lung elastic recoil",
+          D: "Pressure gradient between alveoli and atmosphere"
+        },
+        answer: "D"
+      },
+      {
+        id: 35,
+        topic: "Ventilation-perfusion ratio",
+        stem: "Which factor primarily affects the ventilation-perfusion ratio?",
+        options: {
+          A: "Alveolar capillary perfusion",
+          B: "Bronchoconstriction",
+          C: "Hypoxic vasoconstriction",
+          D: "Pulmonary shunting"
+        },
+        answer: "C"
+      },
+      {
+        id: 36,
+        topic: "Hypothalamic function",
+        stem: "Which of the following is regulated by the hypothalamus?",
+        options: {
+          A: "Appetite control",
+          B: "Body temperature regulation",
+          C: "Voluntary skeletal muscle coordination",
+          D: "Sleep-wake cycle"
+        },
+        answer: "B"
+      },
+      {
+        id: 37,
+        topic: "Coronary circulation",
+        stem: "Which anatomical feature of coronary circulation contributes to subendocardial ischaemia?",
+        options: {
+          A: "Endocardial perfusion primarily occurs during diastole, making it vulnerable to prolonged systolic compression",
+          B: "Epicardial arteries have autoregulatory capacity, but subendocardial capillary networks lack this function",
+          C: "The dominance of the right or left coronary artery determines ischaemic vulnerability of the interventricular septum",
+          D: "The subendocardium receives direct perfusion from intracardiac Thebesian veins, limiting ischaemic risk"
+        },
+        answer: "A"
+      },
+      {
+        id: 38,
+        topic: "Myotomes and dermatomes",
+        stem: "Which of the following best explains the functional significance of myotomes and dermatomes?",
+        options: {
+          A: "Dermatomes represent sensory innervation territories of specific spinal nerves, while myotomes correspond to motor innervation",
+          B: "Each dermatome and myotome is exclusively innervated by a single peripheral nerve, preventing overlap",
+          C: "Myotomes are functionally independent of dermatomes, as motor and sensory pathways do not integrate at the spinal level",
+          D: "The organization of dermatomes is static throughout life, unaffected by injury or neural adaptation"
+        },
+        answer: "A"
+      },
+      {
+        id: 39,
+        topic: "Renin-angiotensin-aldosterone system",
+        stem: "Which of the following best describes the pharmacodynamics of antihypertensives targeting the renin-angiotensin-aldosterone system?",
+        options: {
+          A: "ACE inhibitors decrease angiotensin II levels, reducing vasoconstriction and aldosterone-mediated sodium retention",
+          B: "Angiotensin receptor blockers (ARBs) directly inhibit renin release from the juxtaglomerular apparatus",
+          C: "Beta-blockers reduce systemic vascular resistance by inhibiting angiotensin II receptor-mediated vasoconstriction",
+          D: "Calcium channel blockers exert their antihypertensive effect by directly inhibiting aldosterone secretion"
+        },
+        answer: "A"
+      },
+      {
+        id: 40,
+        topic: "Anticoagulant mechanism",
+        stem: "Which anticoagulant mechanism best explains the role of apixaban in blood clot prevention?",
+        options: {
+          A: "Direct inhibition of factor Xa, preventing conversion of prothrombin to thrombin",
+          B: "Activation of antithrombin III, leading to inhibition of thrombin and factor Xa",
+          C: "Indirect thrombin inhibition via factor Xa suppression",
+          D: "Direct thrombin inhibition, preventing fibrinogen conversion to fibrin"
+        },
+        answer: "A"
+      },
+      {
+        id: 41,
+        topic: "Compartment syndrome",
+        stem: "Which anatomical feature of the lower limb predisposes to compartment syndrome?",
+        options: {
+          A: "The deep fascia of the leg is inelastic, restricting expansion during increased intracompartmental pressure",
+          B: "Extensive collateral circulation limits ischaemia in compartment syndrome, delaying clinical presentation",
+          C: "Nerve compression in compartment syndrome occurs before vascular compromise, leading to early ischaemic neuropathy",
+          D: "The anterior compartment of the leg has the highest risk due to its proximity to superficial veins"
+        },
+        answer: "A"
+      },
+      {
+        id: 42,
+        topic: "Renal physiology",
+        stem: "Which of the following describes the physiological role of the kidney?",
+        options: {
+          A: "Erythropoietin secretion in response to hypoxia",
+          B: "Production of vitamin D3 for calcium homeostasis",
+          C: "Renin release from juxtaglomerular cells in response to decreased renal perfusion",
+          D: "Sodium reabsorption modulation via natriuretic peptides"
+        },
+        answer: "C"
+      },
+      {
+        id: 43,
+        topic: "Isovolumetric ventricular contraction",
+        stem: "Which event corresponds to the isovolumetric contraction phase of the ventricular pressure curve?",
+        options: {
+          A: "Aortic valve opening with rapid ejection of blood",
+          B: "Closure of atrioventricular valves with rising intraventricular pressure",
+          C: "Passive ventricular filling due to atrial contraction",
+          D: "Sudden decrease in ventricular volume due to rapid relaxation"
+        },
+        answer: "B"
+      },
+      {
+        id: 44,
+        topic: "Frank-Starling mechanism",
+        stem: "Which relationship best explains the Frank-Starling mechanism?",
+        options: {
+          A: "An increase in end-diastolic volume enhances stroke volume due to greater myocyte stretch and forceful contraction",
+          B: "Increased contractility decreases preload sensitivity, stabilizing cardiac output",
+          C: "Myocardial oxygen demand decreases as stroke volume increases due to improved efficiency",
+          D: "Stroke volume remains constant despite variations in preload due to autoregulatory mechanisms"
+        },
+        answer: "A"
+      },
+      {
+        id: 45,
+        topic: "Pulmonary vascular resistance",
+        stem: "Which of the following determines pulmonary vascular resistance?",
+        options: {
+          A: "Alveolar hypoxia-induced vasoconstriction",
+          B: "Intravascular nitric oxide-mediated vasodilation",
+          C: "Left atrial pressure and pulmonary capillary flow",
+          D: "Transpulmonary pressure gradients influencing vascular compliance"
+        },
+        answer: "A"
+      },
+      {
+        id: 46,
+        topic: "End-tidal carbon dioxide",
+        stem: "Which factor primarily influences the physiology of end-tidal CO₂?",
+        options: {
+          A: "Alveolar ventilation-to-perfusion mismatch",
+          B: "Diffusion capacity of CO₂ across alveolar membranes",
+          C: "Metabolic CO₂ production rate",
+          D: "Systemic bicarbonate buffering capacity"
+        },
+        answer: "C"
+      },
+      {
+        id: 47,
+        topic: "Cardiac arrhythmias",
+        stem: "Which electrophysiological mechanism best explains cardiac arrhythmias?",
+        options: {
+          A: "Abnormal automaticity leading to ectopic pacemaker activity",
+          B: "Delayed afterdepolarization from intracellular calcium overload",
+          C: "Re-entry circuit formation disrupting normal conduction",
+          D: "Sympathetic overactivation increasing myocardial excitability"
+        },
+        answer: "C"
+      },
+      {
+        id: 48,
+        topic: "Acute pancreatitis",
+        stem: "Which enzyme is primarily responsible for pancreatic autodigestion in acute pancreatitis?",
+        options: {
+          A: "Elastase",
+          B: "Lipase",
+          C: "Phospholipase A2",
+          D: "Trypsin"
+        },
+        answer: "D"
+      },
+      {
+        id: 49,
+        topic: "Brown-Séquard syndrome",
+        stem: "Which neurological deficit characterizes Brown-Séquard syndrome?",
+        options: {
+          A: "Ipsilateral motor paralysis with contralateral loss of pain and temperature sensation",
+          B: "Loss of proprioception on the contralateral side with ipsilateral hemiparesis",
+          C: "Symmetrical loss of pain and temperature sensation",
+          D: "Unilateral lower motor neuron dysfunction sparing sensory pathways"
+        },
+        answer: "A"
+      },
+      {
+        id: 50,
+        topic: "Hypercalcaemia",
+        stem: "Which of the following best describes the pathophysiology of hypercalcaemia?",
+        options: {
+          A: "Increased parathyroid hormone secretion stimulating osteoclast activity",
+          B: "Inhibition of renal calcium excretion due to loop diuretic use",
+          C: "Overexpression of vitamin D receptors enhancing intestinal calcium absorption",
+          D: "Suppression of calcitonin release failing to counteract bone resorption"
+        },
+        answer: "A"
+      }
+    ];
+
+    // State Variables
+    let candidate = { name: "", email: "" };
+    let currentQIndex = 0;
+    let userAnswers = {};
+    const TOTAL_SECONDS = 45 * 60; // 45 Minutes = 2700s
+    let secondsLeft = TOTAL_SECONDS;
+    let timerInterval = null;
+    let examSubmitted = false;
+
+    // Start Exam Function
+    function startExam() {
+      const nameInput = document.getElementById("candidateName").value.trim();
+      const emailInput = document.getElementById("candidateEmail").value.trim();
+
+      if (!nameInput || !emailInput) return;
+
+      candidate.name = nameInput;
+      candidate.email = emailInput;
+
+      document.getElementById("dispCandidateName").innerText = candidate.name;
+      document.getElementById("dispCandidateEmail").innerText = candidate.email;
+
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("examScreen").style.display = "block";
+
+      buildPalette();
+      renderQuestion();
+      startTimer();
+    }
+
+    // Timer Implementation
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        secondsLeft--;
+        updateTimerDisplay();
+
+        if (secondsLeft <= 0) {
+          clearInterval(timerInterval);
+          alert("Time is up! Your 45-minute examination has concluded. Submitting your answers now.");
+          finishExam(true);
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(secondsLeft / 60);
+      const seconds = secondsLeft % 60;
+      const formatted = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      
+      const badge = document.getElementById("timerBadge");
+      const timerText = document.getElementById("timerText");
+      timerText.innerText = formatted;
+
+      if (secondsLeft <= 300) { // Under 5 mins
+        badge.className = "timer-badge danger";
+      } else if (secondsLeft <= 600) { // Under 10 mins
+        badge.className = "timer-badge warning";
+      }
+    }
+
+    // Render Current Question
+    function renderQuestion() {
+      const q = questions[currentQIndex];
+
+      document.getElementById("qTopic").innerText = `QUESTION ${q.id} • ${q.topic.toUpperCase()}`;
+      document.getElementById("qNumberTitle").innerText = `Question ${q.id} of 50`;
+      document.getElementById("qStem").innerText = q.stem;
+      document.getElementById("progressText").innerText = `Question ${q.id} of 50`;
+
+      // Update progress bar & counters
+      const answeredTotal = Object.keys(userAnswers).length;
+      document.getElementById("answeredCountText").innerText = `${answeredTotal} of 50 Answered`;
+      document.getElementById("examProgressBar").style.width = `${((currentQIndex + 1) / 50) * 100}%`;
+
+      // Render Options
+      const container = document.getElementById("optionsContainer");
+      container.innerHTML = "";
+
+      ['A', 'B', 'C', 'D'].forEach(letter => {
+        const optionText = q.options[letter];
+        const isSelected = userAnswers[currentQIndex] === letter;
+
+        const optDiv = document.createElement("div");
+        optDiv.className = `option-card ${isSelected ? 'selected' : ''}`;
+        optDiv.onclick = () => selectOption(letter);
+
+        optDiv.innerHTML = `
+          <div class="option-badge">${letter}</div>
+          <div class="option-text">${optionText}</div>
+        `;
+        container.appendChild(optDiv);
+      });
+
+      // Update Navigation Buttons
+      document.getElementById("prevBtn").disabled = currentQIndex === 0;
+
+      const nextBtn = document.getElementById("nextBtn");
+      if (currentQIndex === questions.length - 1) {
+        nextBtn.innerHTML = `<i class="bi bi-check2-circle me-1"></i> Finish Examination`;
+        nextBtn.className = "btn btn-danger rounded-pill px-4 fw-bold";
+      } else {
+        nextBtn.innerHTML = `Next <i class="bi bi-arrow-right ms-1"></i>`;
+        nextBtn.className = "btn btn-primary rounded-pill px-4 fw-bold";
+        nextBtn.style.background = "var(--accent-teal)";
+        nextBtn.style.borderColor = "var(--accent-teal)";
+      }
+
+      updatePaletteCurrent();
+    }
+
+    // Select Option Handler
+    function selectOption(letter) {
+      userAnswers[currentQIndex] = letter;
+      renderQuestion();
+      updatePaletteStatus(currentQIndex);
+    }
+
+    // Navigation Forward & Backward
+    function nextQuestion() {
+      if (currentQIndex === questions.length - 1) {
+        confirmSubmission();
+      } else {
+        currentQIndex++;
+        renderQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQIndex > 0) {
+        currentQIndex--;
+        renderQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function jumpToQuestion(index) {
+      currentQIndex = index;
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function togglePalette() {
+      const palette = document.getElementById("paletteSection");
+      palette.style.display = palette.style.display === "none" ? "block" : "none";
+    }
+
+    // Palette Grid Helpers
+    function buildPalette() {
+      const grid = document.getElementById("paletteGrid");
+      grid.innerHTML = "";
+
+      questions.forEach((q, idx) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.id = `pal_btn_${idx}`;
+        btn.className = "palette-btn";
+        btn.innerText = idx + 1;
+        btn.onclick = () => jumpToQuestion(idx);
+        grid.appendChild(btn);
+      });
+    }
+
+    function updatePaletteCurrent() {
+      document.querySelectorAll(".palette-btn").forEach((btn, idx) => {
+        if (idx === currentQIndex) {
+          btn.classList.add("current");
+        } else {
+          btn.classList.remove("current");
+        }
+      });
+    }
+
+    function updatePaletteStatus(index) {
+      const btn = document.getElementById(`pal_btn_${index}`);
+      if (btn) {
+        if (userAnswers[index]) {
+          btn.classList.add("answered");
+        } else {
+          btn.classList.remove("answered");
+        }
+      }
+    }
+
+    // Confirm Submission
+    function confirmSubmission() {
+      const answeredCount = Object.keys(userAnswers).length;
+      const unanswered = 50 - answeredCount;
+
+      let msg = "Are you sure you want to finalize and submit your examination?";
+      if (unanswered > 0) {
+        msg = `You still have ${unanswered} UNANSWERED questions! Are you sure you wish to submit now?`;
+      }
+
+      if (confirm(msg)) {
+        finishExam(false);
+      }
+    }
+
+    // Grading and Final Results
+    function finishExam(isTimeOut = false) {
+      if (examSubmitted) return;
+      examSubmitted = true;
+      clearInterval(timerInterval);
+
+      let score = 0;
+      const reviewContainer = document.getElementById("reviewContainer");
+      reviewContainer.innerHTML = "";
+
+      questions.forEach((q, idx) => {
+        const selected = userAnswers[idx] || "Unanswered";
+        const isCorrect = selected === q.answer;
+        if (isCorrect) score++;
+
+        const reviewCard = document.createElement("div");
+        reviewCard.className = `p-3 rounded-4 mb-3 border ${isCorrect ? 'bg-light border-success-subtle' : 'bg-light border-danger-subtle'}`;
+
+        let optionsList = "";
+        ['A', 'B', 'C', 'D'].forEach(letter => {
+          let badgeClass = "bg-light text-muted border";
+          if (letter === q.answer) badgeClass = "bg-success text-white";
+          else if (letter === selected && !isCorrect) badgeClass = "bg-danger text-white";
+
+          optionsList += `
+            <div class="small py-1 ps-2 my-1 rounded ${badgeClass}">
+              <strong>${letter}.</strong> ${q.options[letter]}
+              ${letter === q.answer ? ' <i class="bi bi-check-circle-fill ms-1"></i> (Correct)' : ''}
+              ${letter === selected && !isCorrect ? ' <i class="bi bi-x-circle-fill ms-1"></i> (Your Choice)' : ''}
+            </div>
+          `;
+        });
+
+        reviewCard.innerHTML = `
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="badge ${isCorrect ? 'bg-success' : 'bg-danger'}">${isCorrect ? 'CORRECT' : 'INCORRECT'}</span>
+            <span class="small fw-bold text-muted">Q${q.id} • ${q.topic}</span>
+          </div>
+          <p class="small text-dark mb-2 fw-semibold" style="white-space: pre-line;">${q.stem}</p>
+          <div class="mb-2">${optionsList}</div>
+          ${q.explanation ? `<div class="p-2 mt-2 bg-white rounded border border-info-subtle small text-muted"><strong class="text-primary"><i class="bi bi-lightbulb-fill me-1"></i>Explanation:</strong> ${q.explanation}</div>` : ''}
+        `;
+        reviewContainer.appendChild(reviewCard);
+      });
+
+      const percentage = ((score / 50) * 100).toFixed(1);
+      const isPass = score >= 40; // 80% passing standard
+
+      document.getElementById("scoreObtained").innerText = score;
+      document.getElementById("scorePct").innerText = `${percentage}%`;
+
+      const resultBadge = document.getElementById("resultBadge");
+      resultBadge.innerText = isPass ? "PASS" : "NEEDS REMEDIAL";
+      resultBadge.className = `h3 fw-bold mb-0 ${isPass ? 'text-success' : 'text-danger'}`;
+
+      const resultIcon = document.getElementById("resultIcon");
+      if (isPass) {
+        resultIcon.innerHTML = `<i class="bi bi-check-circle-fill text-success" style="font-size: 3.5rem;"></i>`;
+        document.getElementById("resultTitle").innerText = `Congratulations, ${candidate.name}!`;
+      } else {
+        resultIcon.innerHTML = `<i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 3.5rem;"></i>`;
+        document.getElementById("resultTitle").innerText = `Examination Completed`;
+      }
+
+      const timeUsedSeconds = TOTAL_SECONDS - secondsLeft;
+      const usedMins = Math.floor(timeUsedSeconds / 60);
+      const usedSecs = timeUsedSeconds % 60;
+      document.getElementById("timeTakenText").innerText = `${String(usedMins).padStart(2, '0')}:${String(usedSecs).padStart(2, '0')}`;
+
+      document.getElementById("examScreen").style.display = "none";
+      document.getElementById("resultScreen").style.display = "block";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+
+</body>
+</html>
