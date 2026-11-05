@@ -1,9 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-  <title>Mock MCQ Examination | Hospital Kuala Nerang</title>
+  <title>ALS ADEC - Mock MCQ Examination | Hospital Kuala Nerang</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -34,7 +35,7 @@
       -moz-user-select: auto !important;
       -ms-user-select: auto !important;
       user-select: auto !important;
-      font-size: 16px !important;
+      font-size: 16px !important; /* Prevents auto-zoom in iOS Safari */
     }
 
     body {
@@ -51,7 +52,7 @@
       position: relative;
     }
 
-    /* Dynamic Forensic Watermark Canvas (Overlaid on exam screen) */
+    /* Forensic Security Watermark Canvas */
     #watermarkCanvas {
       position: fixed;
       inset: 0;
@@ -59,11 +60,11 @@
       height: 100vh;
       pointer-events: none;
       z-index: 999;
-      opacity: 0.18;
+      opacity: 0.16;
       display: none;
     }
 
-    /* Mobile Blackout Curtain */
+    /* Instant Blackout Curtain */
     #mobileScreenshotCurtain {
       display: none;
       position: fixed;
@@ -238,7 +239,7 @@
       text-overflow: ellipsis;
     }
 
-    /* Privacy Reveal Curtain (Hold to Read) */
+    /* Privacy Shield (Hold to Read) */
     .privacy-container {
       position: relative;
       margin: 14px 0 20px 0;
@@ -254,7 +255,6 @@
       transition: filter 0.15s ease, opacity 0.15s ease;
     }
 
-    /* Blurring active when not held down */
     .question-stem.obscured {
       filter: blur(12px) !important;
       opacity: 0.15 !important;
@@ -397,7 +397,7 @@
       border-color: var(--accent-teal);
     }
 
-    /* Single-Line Footer */
+    /* Footer */
     footer {
       margin-top: auto;
       background: #ffffff;
@@ -508,7 +508,7 @@
 </head>
 <body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;" ondragstart="return false;" onselectstart="return false;">
 
-  <!-- Forensic Background Watermark (Tiled Candidate Credentials) -->
+  <!-- Forensic Background Watermark -->
   <canvas id="watermarkCanvas"></canvas>
 
   <!-- Mobile Screenshot Blackout Curtain -->
@@ -543,7 +543,7 @@
     <div id="startScreen" class="card-shell text-center">
       <div class="mb-2">
         <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold" style="font-size: 0.78rem;">
-          <i class="bi bi-shield-check me-1"></i> EMERGENCY AND TRAUMA DEPARTMENT
+          <i class="bi bi-shield-check me-1"></i> SECURE RUNNER • COHORT 15
         </span>
       </div>
       <h3 class="fw-bold text-dark mb-1">ALS MCQ Mock Exam</h3>
@@ -630,7 +630,7 @@
           <!-- Populated dynamically -->
         </div>
 
-        <!-- Mobile Touch Navigation Buttons -->
+        <!-- Navigation Buttons -->
         <div class="nav-btn-dock">
           <button type="button" id="prevBtn" class="btn btn-outline-secondary" onclick="prevQuestion()">
             <i class="bi bi-arrow-left me-1"></i> Prev
@@ -726,7 +726,7 @@
 
   </main>
 
-  <!-- Footer (Single-Line, Non-Stacking) -->
+  <!-- Single-Line Footer -->
   <footer>
     <div class="footer-container">
       <div class="footer-logos">
@@ -1357,7 +1357,7 @@
     let timerInterval = null;
     let examSubmitted = false;
 
-    // Build Continuous Forensic Watermark Across Mobile Screen
+    // Forensic Watermarking Across Screen
     function initWatermark() {
       const canvas = document.getElementById("watermarkCanvas");
       canvas.style.display = "block";
@@ -1406,17 +1406,16 @@
       const holdOverlay = document.getElementById("holdOverlay");
       const stem = document.getElementById("qStem");
 
-      const showStem = (e) => {
+      const showStem = () => {
         stem.classList.remove("obscured");
         holdOverlay.classList.add("hidden");
       };
 
-      const hideStem = (e) => {
+      const hideStem = () => {
         stem.classList.add("obscured");
         holdOverlay.classList.remove("hidden");
       };
 
-      // Pointer & Touch events
       privacyBox.addEventListener("touchstart", showStem, { passive: true });
       privacyBox.addEventListener("touchend", hideStem, { passive: true });
       privacyBox.addEventListener("touchcancel", hideStem, { passive: true });
@@ -1668,21 +1667,21 @@
       wipeClipboard();
     }
 
-    // 1. Multi-Finger Gesture Detection
+    // Multi-Finger Gesture Detection
     window.addEventListener("touchstart", (e) => {
       if (e.touches && e.touches.length >= 2) {
         triggerBlackout("Multi-touch screen gesture detected. Screenshot blocked.");
       }
     }, { passive: false });
 
-    // 2. Touch Cancel detection: Triggered when OS hardware buttons or assistive touch take focus
+    // Touch Cancel Detection (Hardware button interception)
     window.addEventListener("touchcancel", () => {
       if (document.getElementById("examScreen").style.display === "block" && !examSubmitted) {
         triggerBlackout("Hardware gesture interception detected. Content shielded.");
       }
     });
 
-    // 3. Page Hide & Visibility Change
+    // Page Hide & Visibility Change
     window.addEventListener("pagehide", () => {
       triggerBlackout("App backgrounded or screenshot gesture initiated.");
     });
@@ -1693,14 +1692,14 @@
       }
     });
 
-    // 4. Window Blur
+    // Window Blur
     window.addEventListener("blur", () => {
       if (document.getElementById("examScreen").style.display === "block" && !examSubmitted) {
         triggerBlackout("Window blur detected. Screen blocked.");
       }
     });
 
-    // 5. Desktop Keyboard Screenshot & Copy Interception
+    // Keyboard Screenshot Interception
     document.addEventListener("keydown", (e) => {
       if (e.key === "PrintScreen" || e.keyCode === 44) {
         triggerBlackout("PrintScreen disabled. Content blocked.");
@@ -1730,3 +1729,5 @@
 
 </body>
 </html>
+
+```
