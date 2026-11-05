@@ -18,7 +18,7 @@
       --border-color: #e2e8f0;
     }
 
-    /* Anti-Copy: Disable text selection globally */
+    /* Anti-Copy Protection */
     * {
       -webkit-user-select: none !important;
       -moz-user-select: none !important;
@@ -34,7 +34,7 @@
       -moz-user-select: auto !important;
       -ms-user-select: auto !important;
       user-select: auto !important;
-      font-size: 16px !important; /* Prevents auto-zoom on iOS safari */
+      font-size: 16px !important;
     }
 
     body {
@@ -47,11 +47,23 @@
       color: var(--primary-navy);
       padding: 10px 8px;
       padding-bottom: calc(10px + env(safe-area-inset-bottom));
-      transition: filter 0.1s ease;
       overflow-x: hidden;
+      position: relative;
     }
 
-    /* Fullscreen Blackout Shield for Mobile Screenshots */
+    /* Dynamic Forensic Watermark Canvas (Overlaid on exam screen) */
+    #watermarkCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.18;
+      display: none;
+    }
+
+    /* Mobile Blackout Curtain */
     #mobileScreenshotCurtain {
       display: none;
       position: fixed;
@@ -79,7 +91,7 @@
       filter: none !important;
     }
 
-    /* Floating Navigation (Adaptive) */
+    /* Floating Navigation */
     nav {
       position: sticky;
       top: 8px;
@@ -143,11 +155,11 @@
       flex-shrink: 0;
     }
 
-    /* Container & Cards */
     .exam-wrapper {
       max-width: 880px;
       width: 100%;
       margin: 0 auto 25px auto;
+      position: relative;
     }
 
     .card-shell {
@@ -156,9 +168,9 @@
       padding: 24px 20px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
       border: 1px solid var(--border-color);
+      position: relative;
     }
 
-    /* Mobile Status & Timer Bar */
     .status-bar {
       display: flex;
       flex-direction: row;
@@ -209,7 +221,6 @@
       50% { transform: scale(1.04); }
     }
 
-    /* Question Elements */
     .question-topic-pill {
       font-size: 0.72rem;
       font-weight: 700;
@@ -227,17 +238,53 @@
       text-overflow: ellipsis;
     }
 
+    /* Privacy Reveal Curtain (Hold to Read) */
+    .privacy-container {
+      position: relative;
+      margin: 14px 0 20px 0;
+    }
+
     .question-stem {
       font-size: 0.98rem;
       line-height: 1.55;
       color: #1e293b;
       font-weight: 500;
       white-space: pre-line;
-      margin: 14px 0 20px 0;
       word-wrap: break-word;
+      transition: filter 0.15s ease, opacity 0.15s ease;
     }
 
-    /* Touch-Optimized Option Cards */
+    /* Blurring active when not held down */
+    .question-stem.obscured {
+      filter: blur(12px) !important;
+      opacity: 0.15 !important;
+      pointer-events: none;
+    }
+
+    .hold-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(248, 250, 252, 0.85);
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      color: #475569;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 15px;
+      cursor: pointer;
+      touch-action: none;
+    }
+
+    .hold-overlay.hidden {
+      display: none !important;
+    }
+
+    /* Options */
     .option-card {
       border: 2px solid #e2e8f0;
       border-radius: 14px;
@@ -295,7 +342,6 @@
       padding-top: 3px;
     }
 
-    /* Mobile Bottom Navigation Bar */
     .nav-btn-dock {
       display: flex;
       gap: 10px;
@@ -316,7 +362,6 @@
       touch-action: manipulation;
     }
 
-    /* Jump Grid Palette */
     .palette-grid {
       display: grid;
       grid-template-columns: repeat(10, 1fr);
@@ -432,7 +477,6 @@
       font-weight: 600;
     }
 
-    /* Screen-specific Responsive Overrides */
     @media (max-width: 576px) {
       body { padding: 8px 6px; }
       nav { padding: 6px 12px; margin-bottom: 10px; }
@@ -451,7 +495,7 @@
     @media print {
       body * { display: none !important; }
       body::before {
-        content: "BLOCKED: Screen recording and printing are strictly prohibited.";
+        content: "BLOCKED: Examination content is strictly confidential.";
         display: block !important;
         font-size: 1.5rem;
         font-weight: bold;
@@ -464,12 +508,15 @@
 </head>
 <body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;" ondragstart="return false;" onselectstart="return false;">
 
-  <!-- Mobile Screenshot / Blur Blackout Curtain -->
+  <!-- Forensic Background Watermark (Tiled Candidate Credentials) -->
+  <canvas id="watermarkCanvas"></canvas>
+
+  <!-- Mobile Screenshot Blackout Curtain -->
   <div id="mobileScreenshotCurtain">
     <i class="bi bi-shield-slash-fill text-danger mb-3" style="font-size: 4rem;"></i>
-    <h3 class="fw-bold mb-2 text-danger">SCREENSHOT BLOCKED</h3>
+    <h3 class="fw-bold mb-2 text-danger">SCREENSHOT INTERCEPTED</h3>
     <p class="text-light" style="max-width: 440px; font-size: 0.88rem; opacity: 0.85;">
-      Mobile screenshot capture, 3-finger swipe gestures, and app-switching are strictly prohibited during the examination.
+      Hardware button combinations, screenshot captures, and app backgrounding are prohibited. Screen has been obscured for exam security.
     </p>
     <button class="btn btn-danger rounded-pill px-4 py-2 mt-3 fw-bold" onclick="dismissBlackout()">
       Resume Examination
@@ -496,19 +543,19 @@
     <div id="startScreen" class="card-shell text-center">
       <div class="mb-2">
         <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold" style="font-size: 0.78rem;">
-          <i class="bi bi-shield-check me-1"></i> EMERGENCY AND TRAUMA DEPARTMENT 
+          <i class="bi bi-shield-check me-1"></i> EMERGENCY AND TRAUMA DEPARTMENT
         </span>
       </div>
-      <h3 class="fw-bold text-dark mb-1">MCQ Mock Exam</h3>
+      <h3 class="fw-bold text-dark mb-1">ALS MCQ Mock Exam</h3>
       <p class="text-muted small mb-3">50 clinical questions • 45 minutes time limit</p>
 
       <div class="text-start mb-3">
         <div class="p-3 bg-light rounded-4 border mb-3">
-          <h6 class="fw-bold mb-2 text-dark small"><i class="bi bi-shield-lock-fill text-danger me-1"></i>Proctoring & Anti-Screenshot:</h6>
+          <h6 class="fw-bold mb-2 text-dark small"><i class="bi bi-shield-lock-fill text-danger me-1"></i>Mobile Anti-Screenshot Protocols:</h6>
           <ul class="text-muted mb-0 ps-3" style="font-size: 0.8rem; line-height: 1.45;">
-            <li>Mobile screenshots, swipe grabs, and task switching are blocked.</li>
-            <li>Timer auto-submits when 45 minutes elapse.</li>
-            <li>Once submitted, questions are cleared and only verified marks are displayed.</li>
+            <li><strong>Forensic Watermarking:</strong> Your verified name and timestamp are etched across every question to identify leaks.</li>
+            <li><strong>Hold-To-Reveal Shield:</strong> Press and hold the question box to unmask the question text. Lifting your fingers to take a screenshot re-blurs the text immediately.</li>
+            <li><strong>Purged Results:</strong> Answers and stems are hidden after completion; only scores are shown.</li>
           </ul>
         </div>
 
@@ -568,7 +615,15 @@
           </button>
         </div>
 
-        <div class="question-stem" id="qStem">Question stem...</div>
+        <!-- Privacy Shielded Question Box -->
+        <div class="privacy-container" id="privacyBox">
+          <div class="question-stem obscured" id="qStem">Question stem...</div>
+          <div class="hold-overlay" id="holdOverlay">
+            <i class="bi bi-fingerprint text-primary mb-1" style="font-size: 1.8rem;"></i>
+            <span>PRESS & HOLD TO READ</span>
+            <span style="font-size: 0.7rem; font-weight: 500; opacity: 0.8;">(Releases will blur screen instantly)</span>
+          </div>
+        </div>
 
         <!-- Options Container -->
         <div id="optionsContainer">
@@ -1302,6 +1357,27 @@
     let timerInterval = null;
     let examSubmitted = false;
 
+    // Build Continuous Forensic Watermark Across Mobile Screen
+    function initWatermark() {
+      const canvas = document.getElementById("watermarkCanvas");
+      canvas.style.display = "block";
+      canvas.width = window.innerWidth * window.devicePixelRatio;
+      canvas.height = window.innerHeight * window.devicePixelRatio;
+      
+      const ctx = canvas.getContext("2d");
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      ctx.font = "bold 13px -apple-system, sans-serif";
+      ctx.fillStyle = "#64748b";
+      ctx.rotate(-25 * Math.PI / 180);
+
+      const stamp = `${candidate.name.toUpperCase()} • ${candidate.email} • HKN ALS`;
+      for (let y = -window.innerHeight; y < window.innerHeight * 2; y += 110) {
+        for (let x = -window.innerWidth; x < window.innerWidth * 2; x += 320) {
+          ctx.fillText(stamp, x, y);
+        }
+      }
+    }
+
     function startExam() {
       const nameInput = document.getElementById("candidateName").value.trim();
       const emailInput = document.getElementById("candidateEmail").value.trim();
@@ -1317,9 +1393,37 @@
       document.getElementById("startScreen").style.display = "none";
       document.getElementById("examScreen").style.display = "block";
 
+      initWatermark();
+      setupHoldToReveal();
       buildPalette();
       renderQuestion();
       startTimer();
+    }
+
+    // Touch-Hold Event Handler
+    function setupHoldToReveal() {
+      const privacyBox = document.getElementById("privacyBox");
+      const holdOverlay = document.getElementById("holdOverlay");
+      const stem = document.getElementById("qStem");
+
+      const showStem = (e) => {
+        stem.classList.remove("obscured");
+        holdOverlay.classList.add("hidden");
+      };
+
+      const hideStem = (e) => {
+        stem.classList.add("obscured");
+        holdOverlay.classList.remove("hidden");
+      };
+
+      // Pointer & Touch events
+      privacyBox.addEventListener("touchstart", showStem, { passive: true });
+      privacyBox.addEventListener("touchend", hideStem, { passive: true });
+      privacyBox.addEventListener("touchcancel", hideStem, { passive: true });
+
+      privacyBox.addEventListener("mousedown", showStem);
+      privacyBox.addEventListener("mouseup", hideStem);
+      privacyBox.addEventListener("mouseleave", hideStem);
     }
 
     function startTimer() {
@@ -1357,6 +1461,10 @@
       document.getElementById("qTopic").innerText = `Q${q.id} • ${q.topic.toUpperCase()}`;
       document.getElementById("qStem").innerText = q.stem;
       document.getElementById("progressText").innerText = `Question ${q.id} of 50`;
+
+      // Reset obscured state for next question
+      document.getElementById("qStem").classList.add("obscured");
+      document.getElementById("holdOverlay").classList.remove("hidden");
 
       const answeredTotal = Object.keys(userAnswers).length;
       document.getElementById("answeredCountText").innerText = `${answeredTotal}/50 Done`;
@@ -1529,6 +1637,7 @@
       document.getElementById("timeTakenText").innerText = `${String(usedMins).padStart(2, '0')}:${String(usedSecs).padStart(2, '0')}`;
 
       questions.length = 0;
+      document.getElementById("watermarkCanvas").remove();
       document.getElementById("examScreen").innerHTML = "";
       document.getElementById("examScreen").style.display = "none";
       document.getElementById("resultScreen").style.display = "block";
@@ -1559,27 +1668,21 @@
       wipeClipboard();
     }
 
-    // 1. Mobile Multi-Touch Gesture Detection (Blocks 3-finger swipe screenshot)
+    // 1. Multi-Finger Gesture Detection
     window.addEventListener("touchstart", (e) => {
-      if (e.touches && e.touches.length >= 3) {
-        triggerBlackout("Multi-finger gesture detected. Screen blocked to prevent screenshot capture.");
+      if (e.touches && e.touches.length >= 2) {
+        triggerBlackout("Multi-touch screen gesture detected. Screenshot blocked.");
       }
     }, { passive: false });
 
-    window.addEventListener("touchmove", (e) => {
-      if (e.touches && e.touches.length >= 3) {
-        triggerBlackout("Multi-finger gesture detected. Screen blocked to prevent screenshot capture.");
-      }
-    }, { passive: false });
-
-    // 2. Touch Cancel detection: Triggered when OS takes over touch for screenshot gesture
+    // 2. Touch Cancel detection: Triggered when OS hardware buttons or assistive touch take focus
     window.addEventListener("touchcancel", () => {
       if (document.getElementById("examScreen").style.display === "block" && !examSubmitted) {
-        triggerBlackout("OS gesture interception detected. Screen blocked.");
+        triggerBlackout("Hardware gesture interception detected. Content shielded.");
       }
     });
 
-    // 3. Page Hide & Visibility Change (Triggered when phone pulls notification shade / app switcher)
+    // 3. Page Hide & Visibility Change
     window.addEventListener("pagehide", () => {
       triggerBlackout("App backgrounded or screenshot gesture initiated.");
     });
@@ -1590,10 +1693,10 @@
       }
     });
 
-    // 4. Window Blur (Triggered when hardware buttons are held for capture)
+    // 4. Window Blur
     window.addEventListener("blur", () => {
       if (document.getElementById("examScreen").style.display === "block" && !examSubmitted) {
-        triggerBlackout("Screenshot action or window blur triggered. Picture blocked.");
+        triggerBlackout("Window blur detected. Screen blocked.");
       }
     });
 
@@ -1621,12 +1724,6 @@
       if (e.key === "F12" || e.keyCode === 123) {
         e.preventDefault();
         return false;
-      }
-    });
-
-    document.addEventListener("keyup", (e) => {
-      if (e.key === "PrintScreen" || e.keyCode === 44) {
-        triggerBlackout("PrintScreen key pressed. Content blocked.");
       }
     });
   </script>
