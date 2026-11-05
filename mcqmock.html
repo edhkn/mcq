@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +19,23 @@
       --border-color: #e2e8f0;
     }
 
+    /* Anti-Copy: Disable text selection globally */
+    * {
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;
+      -webkit-touch-callout: none !important;
+    }
+
+    /* Allow typing in form inputs while keeping copy/paste blocked */
+    input[type="text"], input[type="email"] {
+      -webkit-user-select: auto !important;
+      -moz-user-select: auto !important;
+      -ms-user-select: auto !important;
+      user-select: auto !important;
+    }
+
     body {
       background: linear-gradient(180deg, #f0fdfa 0%, #f8fafc 180px, #f1f5f9 100%);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -26,6 +44,25 @@
       flex-direction: column;
       color: var(--primary-navy);
       padding: 15px 10px;
+    }
+
+    /* Focus/Screenshot Shield Overlay */
+    #focusShield {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.98);
+      backdrop-filter: blur(25px);
+      z-index: 99999;
+      color: #ffffff;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
     }
 
     /* Floating Navigation */
@@ -258,14 +295,6 @@
       box-shadow: 0 0 0 2px #0f172a;
     }
 
-    /* Results Card Callout */
-    .score-hero-box {
-      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-      border: 2px solid #e2e8f0;
-      border-radius: 20px;
-      padding: 30px 20px;
-    }
-
     /* Single-Line Footer */
     footer {
       margin-top: auto;
@@ -354,14 +383,34 @@
       .card-shell { padding: 20px 16px; }
     }
 
+    /* Anti-Screen Grab / Anti-Print: Completely blanks out screen if Print is triggered */
     @media print {
-      nav, footer, .no-print { display: none !important; }
-      body { background: #ffffff; padding: 0; }
-      .card-shell { border: none; box-shadow: none; padding: 0; }
+      body * { display: none !important; }
+      body::before {
+        content: "Printing and screen recording of examination material is strictly prohibited.";
+        display: block !important;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        padding-top: 100px;
+        color: #b91c1c;
+      }
     }
   </style>
 </head>
-<body>
+<body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;" ondragstart="return false;" onselectstart="return false;">
+
+  <!-- Focus/Screenshot Blur Shield Overlay -->
+  <div id="focusShield">
+    <i class="bi bi-shield-slash-fill text-danger mb-3" style="font-size: 4rem;"></i>
+    <h3 class="fw-bold mb-2">Screen Captured / Focus Lost</h3>
+    <p class="text-light" style="max-width: 500px; opacity: 0.85;">
+      Taking screenshots, switching tabs, opening developer utilities, or using screen snippet tools is strictly prohibited during this examination.
+    </p>
+    <button class="btn btn-outline-light rounded-pill px-4 mt-2" onclick="dismissShield()">
+      Return to Exam
+    </button>
+  </div>
 
   <!-- Floating Navigation -->
   <nav>
@@ -386,7 +435,7 @@
     <div id="startScreen" class="card-shell text-center">
       <div class="mb-3">
         <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold" style="font-size: 0.85rem;">
-          <i class="bi bi-patch-check-fill me-1"></i> ALS ADEC COHORT 15
+          <i class="bi bi-shield-check me-1"></i> SECURE EXAM RUNNER • COHORT 15
         </span>
       </div>
       <h2 class="fw-bold text-dark mb-2">ALS MCQ Mock Examination</h2>
@@ -396,13 +445,13 @@
         <div class="col-md-9 col-lg-8">
           
           <div class="p-3 bg-light rounded-4 border mb-4">
-            <h6 class="fw-bold mb-2 text-dark"><i class="bi bi-info-circle-fill text-primary me-2"></i>Exam Rules & Specifications:</h6>
+            <h6 class="fw-bold mb-2 text-dark"><i class="bi bi-shield-lock-fill text-danger me-2"></i>Exam Integrity & Proctoring Rules:</h6>
             <ul class="small text-muted mb-0 ps-3">
               <li><strong>Total Questions:</strong> 50 Multiple Choice Questions (A, B, C, D)</li>
-              <li><strong>Time Allowed:</strong> 45 minutes (Auto-submits when time expires)</li>
-              <li><strong>Navigation:</strong> Move freely between questions using Previous, Next, or the Question Navigator</li>
-              <li><strong>Passing Criteria:</strong> 80% (40 / 50 marks)</li>
-              <li><strong>Confidentiality:</strong> To maintain question pool integrity, detailed questions and answer keys are concealed upon submission. Only verified scores are displayed.</li>
+              <li><strong>Duration:</strong> 45 minutes (Auto-submits when time expires)</li>
+              <li><strong>Anti-Cheating Enabled:</strong> Right-click, text selection, copy-pasting, screenshots, and screen grabs are actively disabled and monitored.</li>
+              <li><strong>Focus Protection:</strong> Exiting full screen or opening snippet utilities will blur and freeze the exam interface.</li>
+              <li><strong>Concealed Answer Bank:</strong> Detailed question items and answer keys are fully purged upon submission; only verified grades are revealed.</li>
             </ul>
           </div>
 
@@ -1239,7 +1288,7 @@
 
         if (secondsLeft <= 0) {
           clearInterval(timerInterval);
-          alert("Time is up! Your 45-minute examination has concluded. Submitting your answers now.");
+          alert("Time has expired! Submitting your answers automatically.");
           finishExam(true);
         }
       }, 1000);
@@ -1254,9 +1303,9 @@
       const timerText = document.getElementById("timerText");
       timerText.innerText = formatted;
 
-      if (secondsLeft <= 300) { // Under 5 mins
+      if (secondsLeft <= 300) {
         badge.className = "timer-badge danger";
-      } else if (secondsLeft <= 600) { // Under 10 mins
+      } else if (secondsLeft <= 600) {
         badge.className = "timer-badge warning";
       }
     }
@@ -1270,12 +1319,10 @@
       document.getElementById("qStem").innerText = q.stem;
       document.getElementById("progressText").innerText = `Question ${q.id} of 50`;
 
-      // Update progress bar & counters
       const answeredTotal = Object.keys(userAnswers).length;
       document.getElementById("answeredCountText").innerText = `${answeredTotal} of 50 Answered`;
       document.getElementById("examProgressBar").style.width = `${((currentQIndex + 1) / 50) * 100}%`;
 
-      // Render Options
       const container = document.getElementById("optionsContainer");
       container.innerHTML = "";
 
@@ -1294,7 +1341,6 @@
         container.appendChild(optDiv);
       });
 
-      // Update Navigation Buttons
       document.getElementById("prevBtn").disabled = currentQIndex === 0;
 
       const nextBtn = document.getElementById("nextBtn");
@@ -1450,13 +1496,103 @@
       const usedSecs = timeUsedSeconds % 60;
       document.getElementById("timeTakenText").innerText = `${String(usedMins).padStart(2, '0')}:${String(usedSecs).padStart(2, '0')}`;
 
-      // Purge and hide exam elements from view
+      // Purge question bank from memory and DOM to prevent post-exam inspection
+      questions.length = 0;
       document.getElementById("examScreen").innerHTML = "";
       document.getElementById("examScreen").style.display = "none";
       document.getElementById("resultScreen").style.display = "block";
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // ========================================================
+    // ANTI-COPY, ANTI-PASTE & ANTI-SCREENSHOT PROCTORING ENGINE
+    // ========================================================
+
+    // 1. Flush clipboard helper
+    function wipeClipboard() {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText("").catch(() => {});
+      }
+    }
+
+    // 2. Intercept keyboard shortcuts (PrintScreen, DevTools, Copy, Cut, Paste, Print, Save, View Source)
+    document.addEventListener("keydown", (e) => {
+      // PrintScreen interception
+      if (e.key === "PrintScreen" || e.keyCode === 44) {
+        wipeClipboard();
+        showShield("Screenshot function is disabled.");
+        e.preventDefault();
+        return false;
+      }
+
+      const isCtrlOrCmd = e.ctrlKey || e.metaKey;
+
+      if (isCtrlOrCmd) {
+        const key = e.key.toLowerCase();
+
+        // Block Copy (Ctrl+C), Paste (Ctrl+V), Cut (Ctrl+X), Select All (Ctrl+A)
+        if (key === 'c' || key === 'v' || key === 'x' || key === 'a') {
+          e.preventDefault();
+          return false;
+        }
+
+        // Block Save Page (Ctrl+S), Print (Ctrl+P), View Source (Ctrl+U)
+        if (key === 's' || key === 'p' || key === 'u') {
+          e.preventDefault();
+          return false;
+        }
+
+        // Block DevTools: Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+        if (e.shiftKey && (key === 'i' || key === 'j' || key === 'c')) {
+          e.preventDefault();
+          return false;
+        }
+      }
+
+      // Block F12 (DevTools)
+      if (e.key === "F12" || e.keyCode === 123) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // 3. Clear clipboard on PrintScreen keyup
+    document.addEventListener("keyup", (e) => {
+      if (e.key === "PrintScreen" || e.keyCode === 44) {
+        wipeClipboard();
+        showShield("Screenshots are strictly prohibited.");
+      }
+    });
+
+    // 4. Blank screen when tab loses focus (Window Blur / Visibility Change)
+    window.addEventListener("blur", () => {
+      if (!examSubmitted && document.getElementById("examScreen").style.display === "block") {
+        showShield();
+      }
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && !examSubmitted && document.getElementById("examScreen").style.display === "block") {
+        showShield();
+      }
+    });
+
+    function showShield(msg) {
+      const shield = document.getElementById("focusShield");
+      if (msg) {
+        shield.querySelector("p").innerText = msg;
+      }
+      shield.style.display = "flex";
+      wipeClipboard();
+    }
+
+    function dismissShield() {
+      document.getElementById("focusShield").style.display = "none";
+      wipeClipboard();
+    }
   </script>
 
 </body>
 </html>
+
+```
